@@ -2,9 +2,9 @@ import { Request, Response, NextFunction } from 'express';
 import axios, { AxiosResponse } from 'axios';
 import * as types from '../types';
 
-// getting all posts
+// Registers a new user in the database and initializes empty profile.
 const registerUser = async (req: Request, res: Response, next: NextFunction) => {
-    // get some posts
+    // Add user to database
     let result: AxiosResponse = await axios.get(`https://jsonplaceholder.typicode.com/posts`);
     let posts: [Post] = result.data;
     return res.status(200).json({
