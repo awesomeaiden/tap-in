@@ -21,7 +21,7 @@ const spec = path.join(__dirname, 'tap_in.yaml');
 // Register openapi validator
 app.use(
     OpenApiValidator.middleware({
-        apiSpec: './tap_in.yaml',
+        apiSpec: spec,
         validateRequests: true, // (default)
         //validateResponses: true, // false by default
     }),
@@ -38,8 +38,19 @@ app.use((err, req, res, next) => {
 });
 
 
-// Routes
+// User routes
 app.post('/register', userController.registerUser);
+app.post('/authenticate', userController.authenticateUser);
+
+// Profile routes
+app.get('/profile/:id', profileController.getProfileByID);
+app.post('/profile:id/add', profileController.addToProfileByID);
+app.delete('/profile:id/remove', profileController.removeFromProfileByID);
+app.post('/profile:id/update', profileController.updateProfileByID);
+app.get('/profile', profileController.getProfileByToken);
+app.post('/profile/add', profileController.addToProfileByToken);
+app.delete('/profile/remove', profileController.removeFromProfileByToken);
+app.post('/profile/update', profileController.updateProfileByToken)
 
 app.get('/', (req, res) => {
     res.send('Hello World!');
