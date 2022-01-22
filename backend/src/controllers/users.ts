@@ -75,7 +75,7 @@ const authenticateUser = async (req: Request, res: Response, next: NextFunction)
 
                 // Store hashedToken in database
                 let tokensRef = db.ref("/tokens");
-                tokensRef.set({
+                tokensRef.push({
                     [hashedToken]: userSnapshot.key
                 });
 
