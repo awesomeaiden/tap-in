@@ -8,7 +8,7 @@ function LogInScreen () {
     return (
         <Layout style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <Text category='h1'>Log In SCREEN</Text>
-        <Button onPress={() => navigation.navigate('Home')}>Button</Button>
+        <Button onPress={() => navigation.navigate('Profile')}>Button</Button>
         </Layout>
     );
 };
