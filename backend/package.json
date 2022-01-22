@@ -4,7 +4,9 @@
   "description": "Backend for tap-in application",
   "main": "dist/app.js",
   "scripts": {
-    "start": "tsc && node dist/app.js",
+    "start": "node ./dist/app.js",
+    "gcp-build": "tsc -p . && cp tap_in.yaml dist",
+    "build-and-start": "tsc && node dist/app.js && cp tap_in.yaml dist",
     "lint": "eslint . --ext .ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
