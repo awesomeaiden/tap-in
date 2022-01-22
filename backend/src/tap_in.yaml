@@ -1,0 +1,325 @@
+---
+openapi: 3.0.2
+info:
+  title: Tap In
+  version: 1.0.0
+  description: API for Tap In backend
+  termsOfService: http://swagger.io/terms/
+  contact:
+    name: Aiden Gonzalez
+    email: gonza487@purdue.edu
+  license:
+    name: MIT License
+    url: https://opensource.org/licenses/MIT
+paths:
+  /register:
+    description: For registration of new users
+    post:
+      requestBody:
+        description: UserRegistrationInfo object to register new user.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegistrationInfo'
+        required: true
+      responses:
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientAuthToken'
+          description: New registered user response
+      operationId: registerUser
+      summary: Register a new user in the database and initialize empty profile
+      description: ""
+  /authenticate:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserAuthenticationInfo'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientAuthToken'
+          description: Token for authenticated client
+      operationId: authenticateUser
+      summary: Request token to authenticate the client
+  /profile/{id}:
+    description: Retrieve profile by ID
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+          description: Return user profile
+      security:
+      - clientToken: []
+      operationId: getProfileByID
+      summary: Retrieve profile by ID
+    parameters:
+    - name: id
+      description: Profile id
+      schema:
+        type: integer
+      in: path
+      required: true
+  /profile/{id}/add:
+    description: Add new account to profile
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Account'
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+          description: Account added
+      security:
+      - clientToken: []
+      operationId: addToProfileByID
+      summary: Add account to user profile
+    parameters:
+    - name: id
+      description: Profile id
+      schema:
+        type: integer
+      in: path
+      required: true
+  /profile/{id}/remove:
+    delete:
+      parameters:
+      - name: accountName
+        description: Name of account
+        schema:
+          $ref: '#/components/schemas/AccountName'
+        in: query
+        required: true
+      responses:
+        "200":
+          description: Account removed from profile
+      security:
+      - clientToken: []
+      operationId: removeFromProfileByID
+      summary: Remove account from user profile
+    parameters:
+    - name: id
+      description: Profile id
+      schema:
+        type: integer
+      in: path
+      required: true
+  /profile/{id}/update:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Account'
+        required: true
+      parameters:
+      - name: accountName
+        description: Name of account
+        schema:
+          $ref: '#/components/schemas/AccountName'
+        in: query
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+          description: Profile updated
+      security:
+      - clientToken: []
+      operationId: updateProfileByID
+      summary: Update existing account
+    parameters:
+    - name: id
+      description: Profile id
+      schema:
+        type: integer
+      in: path
+      required: true
+components:
+  schemas:
+    Error:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          description: Error code
+          type: integer
+        message:
+          description: Error message
+          type: string
+      example:
+        code: 12
+        message: Error message
+    User:
+      required:
+      - id
+      - email
+      - passHash
+      - bio
+      type: object
+      properties:
+        id:
+          description: Unique user id
+          type: integer
+        email:
+          description: Email address of user
+          type: string
+        passHash:
+          description: SHA-256 hash of user password
+          type: string
+        bio:
+          $ref: '#/components/schemas/UserBio'
+          description: User bio information
+      example:
+        id: 19
+        email: email@domain.com
+        passHash: 5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8
+        bio:
+          first: Aiden
+          last: Gonzalez
+    Profile:
+      required:
+      - id
+      - accounts
+      type: object
+      properties:
+        id:
+          description: Unique profile id (matches user id)
+          type: integer
+        accounts:
+          description: Array of accounts
+          type: array
+          items:
+            $ref: '#/components/schemas/Account'
+      example:
+        id: 19
+        accounts:
+        - name: discord
+          link: https://discord.com/users/434158057254158338
+        - name: linkedin
+          link: https://www.linkedin.com/in/aiden-gonzalez-712a26170/
+    Account:
+      description: Social media account
+      required:
+      - name
+      - link
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/AccountName'
+          description: "Name of account (Snapchat, Facebook etc)"
+        link:
+          description: Link associated with account
+          type: string
+      example:
+        name: linkedin
+        link: https://www.linkedin.com/in/aiden-gonzalez-712a26170/
+    UserRegistrationInfo:
+      description: Contains information necessary for user registration
+      required:
+      - bio
+      - auth
+      type: object
+      properties:
+        auth:
+          $ref: '#/components/schemas/UserAuthenticationInfo'
+          description: User authentication information
+        bio:
+          $ref: '#/components/schemas/UserBio'
+          description: First name of user
+      example:
+        auth:
+          pass: password
+          email: email@domain.com
+        bio:
+          first: Aiden
+          last: Gonzalez
+    UserAuthenticationInfo:
+      description: Authentication info (password) for user
+      required:
+      - pass
+      - email
+      type: object
+      properties:
+        pass:
+          description: Password of user
+          type: string
+        email:
+          description: Email address of user
+          type: string
+      example:
+        pass: password
+        email: email@domain.com
+    ClientAuthToken:
+      description: Unique authorization token issued to successfully authorized clients
+      required:
+      - token
+      type: object
+      properties:
+        token:
+          description: Client token
+          type: string
+      example:
+        token: 3c469e9d6c5875d37a43f353d4f88e61fcf812c66eee3457465a40b0da4153e0
+    UserBio:
+      description: Basic information about the user
+      required:
+      - first
+      - last
+      type: object
+      properties:
+        first:
+          description: First name of user
+          type: string
+        last:
+          description: Last name of user
+          type: string
+      example:
+        first: Aiden
+        last: Gonzalez
+    AccountName:
+      description: Name of account
+      enum:
+      - facebook
+      - instagram
+      - snapchat
+      - twitter
+      - linkedin
+      - discord
+      - email
+      - youtube
+      - phone
+      type: string
+      example: '"instagram"'
+  securitySchemes:
+    clientToken:
+      type: apiKey
+      description: Client is granted an API token
+      name: Authorization
+      in: header
