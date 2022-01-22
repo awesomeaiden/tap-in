@@ -52,10 +52,10 @@ admin.initializeApp({
 });
 
 // As an admin, the app has access to read and write all data, regardless of Security Rules
-var db = admin.database();
+export let db = admin.database();
 
 // Example fetching the entire JSON tree:
-var ref = db.ref("/");
+let ref = db.ref("/");
 ref.once("value", function(snapshot) {
     console.log(snapshot.val());
 });
