@@ -44,9 +44,9 @@ app.post('/authenticate', userController.authenticateUser);
 
 // Profile routes
 app.get('/profile/:id', profileController.getProfileByID);
-app.post('/profile:id/add', profileController.addToProfileByID);
-app.delete('/profile:id/remove', profileController.removeFromProfileByID);
-app.post('/profile:id/update', profileController.updateProfileByID);
+app.post('/profile/:id/add', profileController.addToProfileByID);
+app.delete('/profile/:id/remove', profileController.removeFromProfileByID);
+app.post('/profile/:id/update', profileController.updateProfileByID);
 app.get('/profile', profileController.getProfileByToken);
 app.post('/profile/add', profileController.addToProfileByToken);
 app.delete('/profile/remove', profileController.removeFromProfileByToken);

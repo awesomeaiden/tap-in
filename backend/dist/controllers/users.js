@@ -51,7 +51,7 @@ const registerUser = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
         name: types_1.AccountName[types_1.AccountName.email],
         link: newUser.email
     };
-    yield profileRef.push({
+    yield profileRef.update({
         [userID]: [emailAcc]
     });
     // Generate new API token
@@ -59,7 +59,7 @@ const registerUser = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
     let hashedToken = utils.hash(token);
     // Store hashedToken in database
     let tokensRef = yield app_1.db.ref("/tokens");
-    yield tokensRef.push({
+    yield tokensRef.update({
         [hashedToken]: userID
     });
     // Return token to user
@@ -95,7 +95,7 @@ const authenticateUser = (req, res, next) => __awaiter(void 0, void 0, void 0, f
                 let hashedToken = utils.hash(token);
                 // Store hashedToken in database
                 let tokensRef = app_1.db.ref("/tokens");
-                tokensRef.set({
+                tokensRef.update({
                     [hashedToken]: userSnapshot.key
                 });
                 // Return token to user

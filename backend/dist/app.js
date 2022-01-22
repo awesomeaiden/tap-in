@@ -58,9 +58,9 @@ app.post('/register', users_1.default.registerUser);
 app.post('/authenticate', users_1.default.authenticateUser);
 // Profile routes
 app.get('/profile/:id', profiles_1.default.getProfileByID);
-app.post('/profile:id/add', profiles_1.default.addToProfileByID);
-app.delete('/profile:id/remove', profiles_1.default.removeFromProfileByID);
-app.post('/profile:id/update', profiles_1.default.updateProfileByID);
+app.post('/profile/:id/add', profiles_1.default.addToProfileByID);
+app.delete('/profile/:id/remove', profiles_1.default.removeFromProfileByID);
+app.post('/profile/:id/update', profiles_1.default.updateProfileByID);
 app.get('/profile', profiles_1.default.getProfileByToken);
 app.post('/profile/add', profiles_1.default.addToProfileByToken);
 app.delete('/profile/remove', profiles_1.default.removeFromProfileByToken);
