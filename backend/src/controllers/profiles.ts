@@ -35,6 +35,9 @@ const getProfileIDFromToken = async function(token: string): Promise<string> {
 // Get a profile by Token
 const getProfileByToken = async (req: Request, res: Response, next: NextFunction) => {
     // Verify token
+    console.log(req);
+    console.log("HERE IS THE AUTHORIZATION HEADER!!");
+    console.log(req.get("Authorization"));
     let tokenValid = await verifyToken(req.get("Authorization"));
     if (tokenValid) {
         // Get profile ID from query param

@@ -67,7 +67,7 @@ const authenticateUser = async (req: Request, res: Response, next: NextFunction)
                 return res.status(err.code).json(err);
             } else {
                 // Matches, issue NEW token
-                let userID = utils.hash(userSnapshot.key);
+                let userID = utils.b64enc(userSnapshot.key);
                 let token = utils.hash(userID + Date.now().toString());
                 let hashedToken = utils.hash(token);
 
