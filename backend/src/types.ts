@@ -1,20 +1,20 @@
 export interface Error {
     code: Number;
-    message: String;
+    message: string;
 }
 
 export interface ClientAuthToken {
-    token: String;
+    token: string;
 }
 
 export interface UserAuthenticationInfo {
-    pass: String;
-    email: String;
+    pass: string;
+    email: string;
 }
 
 export interface UserBio {
-    first: String;
-    last: String;
+    first: string;
+    last: string;
 }
 
 export interface UserRegistrationInfo {
@@ -23,9 +23,8 @@ export interface UserRegistrationInfo {
 }
 
 export interface User {
-    id: Number;
-    email: String;
-    passHash: String;
+    email: string;
+    passHash: string;
     bio: UserBio;
 }
 
@@ -43,7 +42,7 @@ export enum AccountName {
 
 export interface Account {
     name: AccountName;
-    link: String;
+    link: string;
 }
 
 export interface Profile {

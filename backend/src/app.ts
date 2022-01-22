@@ -3,6 +3,10 @@ import admin from 'firebase-admin';
 import path from 'path';
 const app = express();
 
+// Controllers
+import userController from "./controllers/users";
+import profileController from "./controllers/profiles";
+
 // Import validator middleware
 import * as OpenApiValidator from 'express-openapi-validator';
 
@@ -19,7 +23,7 @@ app.use(
     OpenApiValidator.middleware({
         apiSpec: './tap_in.yaml',
         validateRequests: true, // (default)
-        validateResponses: true, // false by default
+        //validateResponses: true, // false by default
     }),
 );
 
@@ -29,9 +33,13 @@ app.use((err, req, res, next) => {
     console.error(err);  // dump error to console for debug
     res.status(err.status || 500).json({
         message: err.message,
-        errors: err.errors,
+        code: (err.status || 500)
     });
 });
+
+
+// Routes
+app.post('/register', userController.registerUser);
 
 app.get('/', (req, res) => {
     res.send('Hello World!');

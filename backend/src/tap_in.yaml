@@ -23,18 +23,12 @@ paths:
               $ref: '#/components/schemas/UserRegistrationInfo'
         required: true
       responses:
-        default:
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: unexpected error
-        "200":
+        "201":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientAuthToken'
-          description: New registered user response
+          description: User account created
       operationId: registerUser
       summary: Register a new user in the database and initialize empty profile
       description: ""
