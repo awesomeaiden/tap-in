@@ -1,5 +1,5 @@
 export interface Error {
-    code: Number;
+    code: number;
     message: string;
 }
 
@@ -41,7 +41,7 @@ export enum AccountName {
 }
 
 export interface Account {
-    name: AccountName;
+    name: string;
     link: string;
 }
 

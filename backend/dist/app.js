@@ -29,6 +29,7 @@ const path_1 = __importDefault(require("path"));
 const app = (0, express_1.default)();
 // Controllers
 const users_1 = __importDefault(require("./controllers/users"));
+const profiles_1 = __importDefault(require("./controllers/profiles"));
 // Import validator middleware
 const OpenApiValidator = __importStar(require("express-openapi-validator"));
 // Set up body parsers
@@ -39,7 +40,7 @@ app.use(express_1.default.urlencoded({ extended: false }));
 const spec = path_1.default.join(__dirname, 'tap_in.yaml');
 // Register openapi validator
 app.use(OpenApiValidator.middleware({
-    apiSpec: './tap_in.yaml',
+    apiSpec: spec,
     validateRequests: true, // (default)
     //validateResponses: true, // false by default
 }));
@@ -52,8 +53,18 @@ app.use((err, req, res, next) => {
         code: (err.status || 500)
     });
 });
-// Routes
+// User routes
 app.post('/register', users_1.default.registerUser);
+app.post('/authenticate', users_1.default.authenticateUser);
+// Profile routes
+app.get('/profile/:id', profiles_1.default.getProfileByID);
+app.post('/profile:id/add', profiles_1.default.addToProfileByID);
+app.delete('/profile:id/remove', profiles_1.default.removeFromProfileByID);
+app.post('/profile:id/update', profiles_1.default.updateProfileByID);
+app.get('/profile', profiles_1.default.getProfileByToken);
+app.post('/profile/add', profiles_1.default.addToProfileByToken);
+app.delete('/profile/remove', profiles_1.default.removeFromProfileByToken);
+app.post('/profile/update', profiles_1.default.updateProfileByToken);
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });
