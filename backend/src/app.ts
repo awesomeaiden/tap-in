@@ -62,7 +62,7 @@ app.listen(PORT, () => {
     return console.log(`Server listening on port ${PORT}...`);
 });
 
-// Firebase stuff - for later
+// Firebase stuff
 
 // Firebase admin sdk
 admin.initializeApp({
@@ -72,9 +72,3 @@ admin.initializeApp({
 
 // As an admin, the app has access to read and write all data, regardless of Security Rules
 export let db = admin.database();
-
-// Example fetching the entire JSON tree:
-let ref = db.ref("/");
-ref.once("value", function(snapshot) {
-    console.log(snapshot.val());
-});

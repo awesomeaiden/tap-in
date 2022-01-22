@@ -73,7 +73,7 @@ const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
     return console.log(`Server listening on port ${PORT}...`);
 });
-// Firebase stuff - for later
+// Firebase stuff
 // Firebase admin sdk
 firebase_admin_1.default.initializeApp({
     credential: firebase_admin_1.default.credential.applicationDefault(),
@@ -81,9 +81,4 @@ firebase_admin_1.default.initializeApp({
 });
 // As an admin, the app has access to read and write all data, regardless of Security Rules
 exports.db = firebase_admin_1.default.database();
-// Example fetching the entire JSON tree:
-let ref = exports.db.ref("/");
-ref.once("value", function (snapshot) {
-    console.log(snapshot.val());
-});
 //# sourceMappingURL=app.js.map

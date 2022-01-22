@@ -25,7 +25,7 @@ const registerUser = async (req: Request, res: Response, next: NextFunction) => 
         name: AccountName[AccountName.email],
         link: newUser.email
     };
-    await profileRef.set({
+    await profileRef.push({
         [userID]: [emailAcc]
     });
 
@@ -35,7 +35,7 @@ const registerUser = async (req: Request, res: Response, next: NextFunction) => 
 
     // Store hashedToken in database
     let tokensRef = await db.ref("/tokens");
-    await tokensRef.set({
+    await tokensRef.push({
         [hashedToken]: userID
     });
 
