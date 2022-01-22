@@ -73,7 +73,7 @@ paths:
     - name: id
       description: Profile id
       schema:
-        type: integer
+        type: string
       in: path
       required: true
   /profile/{id}/add:
@@ -100,7 +100,7 @@ paths:
     - name: id
       description: Profile id
       schema:
-        type: integer
+        type: string
       in: path
       required: true
   /profile/{id}/remove:
@@ -123,7 +123,7 @@ paths:
     - name: id
       description: Profile id
       schema:
-        type: integer
+        type: string
       in: path
       required: true
   /profile/{id}/update:
@@ -156,7 +156,7 @@ paths:
     - name: id
       description: Profile id
       schema:
-        type: integer
+        type: string
       in: path
       required: true
 components:
@@ -186,7 +186,7 @@ components:
       properties:
         id:
           description: Unique user id
-          type: integer
+          type: string
         email:
           description: Email address of user
           type: string
@@ -211,7 +211,7 @@ components:
       properties:
         id:
           description: Unique profile id (matches user id)
-          type: integer
+          type: string
         accounts:
           description: Array of accounts
           type: array
