@@ -59,12 +59,12 @@ app.post('/authenticate', users_1.default.authenticateUser);
 // Profile routes
 app.get('/profile/:id', profiles_1.default.getProfileByID);
 app.post('/profile/:id/add', profiles_1.default.addToProfileByID);
-app.delete('/profile/:id/remove', profiles_1.default.removeFromProfileByID);
+app.post('/profile/:id/remove', profiles_1.default.removeFromProfileByID);
 app.post('/profile/:id/update', profiles_1.default.updateProfileByID);
 app.get('/profile', profiles_1.default.getProfileByToken);
 app.post('/profile/add', profiles_1.default.addToProfileByToken);
-app.delete('/profile/remove', profiles_1.default.removeFromProfileByToken);
-app.post('/profile/update', profiles_1.default.updateProfileByToken);
+app.post('/profile/remove:name', profiles_1.default.removeFromProfileByToken);
+app.post('/profile/update:name', profiles_1.default.updateProfileByToken);
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });

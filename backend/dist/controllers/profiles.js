@@ -52,7 +52,7 @@ const getProfileIDFromToken = function (token) {
     return __awaiter(this, void 0, void 0, function* () {
         return new Promise((resolve, reject) => {
             let hashedToken = utils.hash(token);
-            let tokenRef = app_1.db.ref("/tokens/" + hashedToken).limitToFirst(1).on('value', (tokenSnapshot) => {
+            let tokenRef = app_1.db.ref("/tokens/" + hashedToken).on('value', (tokenSnapshot) => {
                 resolve(tokenSnapshot.val());
             });
         });
@@ -164,7 +164,7 @@ const removeFromProfileByToken = (req, res, next) => __awaiter(void 0, void 0, v
     if (yield verifyToken(req.get("Authorization"))) {
         // Get profile ID from query param
         let profileID = yield getProfileIDFromToken(req.get("Authorization"));
-        let accountName = req.params.accountName;
+        let accountName = req.params.name;
         if (accountName == null) {
             return res.status(accountNameErr.code).json(accountNameErr);
         }
@@ -221,7 +221,7 @@ const updateProfileByToken = (req, res, next) => __awaiter(void 0, void 0, void 
         // Get profile ID from query param
         let profileID = yield getProfileIDFromToken(req.get("Authorization"));
         req.params.id;
-        let accountName = req.params.accountName;
+        let accountName = req.params.name;
         if (accountName == null) {
             return res.status(accountNameErr.code).json(accountNameErr);
         }
