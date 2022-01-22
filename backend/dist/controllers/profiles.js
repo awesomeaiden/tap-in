@@ -52,32 +52,13 @@ const getProfileIDFromToken = function (token) {
     return __awaiter(this, void 0, void 0, function* () {
         return new Promise((resolve, reject) => {
             let hashedToken = utils.hash(token);
-            let tokenRef = app_1.db.ref("/tokens/" + hashedToken).limitToFirst(1).on('value', (tokenSnapshot) => {
+            let tokenRef = app_1.db.ref("/tokens/" + hashedToken).on('value', (tokenSnapshot) => {
                 resolve(tokenSnapshot.val());
             });
         });
     });
 };
-// Get a profile by ID
-const getProfileByID = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    // Verify token
-    if (yield verifyToken(req.get("Authorization"))) {
-        // Get profile ID from query param
-        let profileID = req.params.id;
-        if (profileID == null) {
-            profileID = yield getProfileIDFromToken(req.get("Authorization"));
-        }
-        // Get profile from database
-        let profileRef = app_1.db.ref('/profiles/' + profileID);
-        profileRef.on('value', (profileSnapshot) => {
-            return res.status(200).json(profileSnapshot.val());
-        });
-    }
-    else {
-        return res.status(tokenErr.code).json(tokenErr);
-    }
-});
-// Get a profile by Token only
+// Get a profile by Token
 const getProfileByToken = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     // Verify token
     let tokenValid = yield verifyToken(req.get("Authorization"));
@@ -87,33 +68,19 @@ const getProfileByToken = (req, res, next) => __awaiter(void 0, void 0, void 0, 
         // Get profile from database
         let profileRef = app_1.db.ref('/profiles/' + profileID);
         profileRef.on('value', (profileSnapshot) => {
-            return res.status(200).json(profileSnapshot.val());
+            let profileAccounts = profileSnapshot.val();
+            let profile = {
+                id: profileID,
+                accounts: profileAccounts
+            };
+            return res.status(200).json(profile);
         });
     }
     else {
         return res.status(tokenErr.code).json(tokenErr);
     }
 });
-// Add account to a profile by ID
-const addToProfileByID = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    // Verify token
-    if (yield verifyToken(req.get("Authorization"))) {
-        // Get profile ID from query param
-        let profileID = req.params.id;
-        if (profileID == null) {
-            profileID = yield getProfileIDFromToken(req.get("Authorization"));
-        }
-        // Push new account to profile
-        let accountsRef = app_1.db.ref('/profiles/' + profileID);
-        let newAccount = req.body;
-        yield accountsRef.push(newAccount);
-        return res.status(200).json(newAccount);
-    }
-    else {
-        return res.status(tokenErr.code).json(tokenErr);
-    }
-});
-// Add account to a profile by Token only
+// Add account to a profile by Token
 const addToProfileByToken = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     // Verify token
     if (yield verifyToken(req.get("Authorization"))) {
@@ -129,42 +96,13 @@ const addToProfileByToken = (req, res, next) => __awaiter(void 0, void 0, void 0
         return res.status(tokenErr.code).json(tokenErr);
     }
 });
-// Remove account from a profile by ID
-const removeFromProfileByID = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    // Verify token
-    if (yield verifyToken(req.get("Authorization"))) {
-        // Get profile ID from query param
-        let profileID = req.params.id;
-        if (profileID == null) {
-            profileID = yield getProfileIDFromToken(req.get("Authorization"));
-        }
-        let accountName = req.params.accountName;
-        if (accountName == null) {
-            return res.status(accountNameErr.code).json(accountNameErr);
-        }
-        // Remove account with given name from profile
-        let accountRef = app_1.db.ref('/profiles/' + profileID);
-        accountRef.on('value', (accountSnapshot) => __awaiter(void 0, void 0, void 0, function* () {
-            let accounts = accountSnapshot.val();
-            const index = accounts.indexOf(accountName);
-            if (index > -1) {
-                accounts.splice(index, 1);
-            }
-            yield accountRef.set(accounts);
-            return res.status(200);
-        }));
-    }
-    else {
-        return res.status(tokenErr.code).json(tokenErr);
-    }
-});
-// Remove account from a profile by Token only
+// Remove account from a profile by Token
 const removeFromProfileByToken = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     // Verify token
     if (yield verifyToken(req.get("Authorization"))) {
         // Get profile ID from query param
         let profileID = yield getProfileIDFromToken(req.get("Authorization"));
-        let accountName = req.params.accountName;
+        let accountName = req.params.name;
         if (accountName == null) {
             return res.status(accountNameErr.code).json(accountNameErr);
         }
@@ -178,36 +116,6 @@ const removeFromProfileByToken = (req, res, next) => __awaiter(void 0, void 0, v
             }
             yield accountRef.set(accounts);
             return res.status(200);
-        }));
-    }
-    else {
-        return res.status(tokenErr.code).json(tokenErr);
-    }
-});
-// Update account in a profile by ID
-const updateProfileByID = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    // Verify token
-    if (yield verifyToken(req.get("Authorization"))) {
-        // Get profile ID from query param
-        let profileID = req.params.id;
-        if (profileID == null) {
-            profileID = yield getProfileIDFromToken(req.get("Authorization"));
-        }
-        let accountName = req.params.accountName;
-        if (accountName == null) {
-            return res.status(accountNameErr.code).json(accountNameErr);
-        }
-        let newAccount = req.body;
-        // Update account with given name from profile
-        let accountRef = app_1.db.ref('/profiles/' + profileID);
-        accountRef.on('value', (accountSnapshot) => __awaiter(void 0, void 0, void 0, function* () {
-            let accounts = accountSnapshot.val();
-            const index = accounts.indexOf(accountName);
-            if (index > -1) {
-                accounts[index] = newAccount;
-            }
-            yield accountRef.set(accounts);
-            return res.status(200).json(newAccount);
         }));
     }
     else {
@@ -221,7 +129,7 @@ const updateProfileByToken = (req, res, next) => __awaiter(void 0, void 0, void 
         // Get profile ID from query param
         let profileID = yield getProfileIDFromToken(req.get("Authorization"));
         req.params.id;
-        let accountName = req.params.accountName;
+        let accountName = req.params.name;
         if (accountName == null) {
             return res.status(accountNameErr.code).json(accountNameErr);
         }
@@ -242,6 +150,5 @@ const updateProfileByToken = (req, res, next) => __awaiter(void 0, void 0, void 
         return res.status(tokenErr.code).json(tokenErr);
     }
 });
-exports.default = { getProfileByID, getProfileByToken, addToProfileByID, addToProfileByToken, removeFromProfileByID,
-    removeFromProfileByToken, updateProfileByID, updateProfileByToken };
+exports.default = { getProfileByToken, addToProfileByToken, removeFromProfileByToken, updateProfileByToken };
 //# sourceMappingURL=profiles.js.map

@@ -30,7 +30,7 @@ const registerUser = async (req: Request, res: Response, next: NextFunction) => 
     });
 
     // Generate new API token
-    let token = utils.hash(userID);
+    let token = utils.hash(userID + Date.now().toString());
     let hashedToken = utils.hash(token);
 
     // Store hashedToken in database
@@ -56,12 +56,9 @@ const authenticateUser = async (req: Request, res: Response, next: NextFunction)
     // Check info against database
     const usersRef = await db.ref('/users');
     usersRef.orderByChild('email').equalTo(userAuth.email).limitToFirst(1).on('child_added', (userSnapshot) => {
-        console.log('/users' + userSnapshot.key + '/passHash')
         // Check if passHash equals stored passHash
         const passRef = db.ref('/users/' + userSnapshot.key + '/passHash');
         passRef.on('value', (passSnapshot) => {
-            console.log(passHash);
-            console.log(passSnapshot.val());
             if (passHash != passSnapshot.val()) {
                 let err: types.Error = {
                     code: 401,
@@ -69,14 +66,15 @@ const authenticateUser = async (req: Request, res: Response, next: NextFunction)
                 }
                 return res.status(err.code).json(err);
             } else {
-                // Matches, issue new token
-                let token = utils.hash(userSnapshot.key);
+                // Matches, issue NEW token
+                let userID = utils.b64enc(userSnapshot.key);
+                let token = utils.hash(userID + Date.now().toString());
                 let hashedToken = utils.hash(token);
 
                 // Store hashedToken in database
                 let tokensRef = db.ref("/tokens");
                 tokensRef.update({
-                    [hashedToken]: userSnapshot.key
+                    [hashedToken]: userID
                 });
 
                 // Return token to user

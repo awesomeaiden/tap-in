@@ -46,6 +46,6 @@ export interface Account {
 }
 
 export interface Profile {
-    id: Number;
+    id: string;
     accounts: Array<Account>;
 }
