@@ -8,7 +8,8 @@ function HomeScreen () {
   return (
     <Layout style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
     <Text category='h1'>HOME SCREEN</Text>
-    <Button onPress={() => navigation.navigate('Test')}>Button</Button>
+    <Button onPress={() => navigation.navigate('Scan')}>Scan</Button>
+    <Button onPress={() => navigation.navigate('Project')}>Project</Button>
     </Layout>
   );
 };
