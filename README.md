@@ -1,6 +1,8 @@
 # tap-in
 The quick and easy way to share your contact information and social media accounts with anyone.  Whether you're in class, at a party, out on the town, or on the golf course - just tap in!
 
+If you'd just like to try out the app on your Android device, you can use the APK in the root directory of this repository.  If you'd like to build from source, keep reading!
+
 ### Installation and build
 To install and build the backend from source, simply run:
 ```
