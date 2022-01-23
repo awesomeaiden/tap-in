@@ -1,19 +1,14 @@
-import React from 'react';
+import React, { useState} from 'react';
 import * as eva from '@eva-design/eva';
-import { ApplicationProvider, Layout, Text, Button } from '@ui-kitten/components';
+import { ApplicationProvider, Layout, Text, Button, Input } from '@ui-kitten/components';
 import { useNavigation } from '@react-navigation/native';
-import { StyleSheet, View, ScrollView } from 'react-native';
+import { StyleSheet, View, ScrollView, Modal, Pressable, TextInput } from 'react-native';
 import { SocialIcon } from 'react-native-elements';
 
 
 function ProfileScreen () {
   const navigation = useNavigation();
-//   return (
-//     <Layout style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-//     <Text category='h1'>My Profile</Text>
-//     <Button onPress={() => navigation.navigate('Home')}>Tap!</Button>
-//     </Layout>
-//   );
+
    const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -21,34 +16,111 @@ function ProfileScreen () {
       justifyContent: 'center',
       alignItems: 'center',
     },
+
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 22
+      },
+
+      modalView: {
+        margin: 20,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 35,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+      },
+      button: {
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2
+      },
+      buttonOpen: {
+        backgroundColor: "#F194FF",
+      },
+      buttonClose: {
+        backgroundColor: "#2196F3",
+      },
+      textStyle: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center"
+      },
+      modalText: {
+        marginBottom: 15,
+        textAlign: "center",
+        color: "black"
+      }
   });
+
+  //states for titles of the different buttons
+  //each state variable can be used as the username when filled in by the user
+  const [emailTitle, setEmailTitle] = useState("Connect Email");
+  const [facebookTitle, setFacebookTitle] = useState("Connect Facebook");
+  const [instagramTitle, setInstagramTitle] = useState("Connect Instagram");
+  const [linkedlnTitle, setLinkedlnTitle] = useState("Connect Linkeldn");
+  const [youtubeTitle, setYoutubeTitle] = useState("Connect YouTube");
+  const [twitterTitle, setTwitterTitle] = useState("Connect Twitter");
+  const [snapchatTitle, setSnapchatTitle] = useState("Connect Snapchat");
+  const [discordTitle, setDiscordTitle] = useState("Connect Discord");
+
+  //states for user input modals
+  const [emailModalVisible, setEmailModalVisible] = useState(false);
+
 return (
     <ScrollView>  
           <View style={{ width: '100%' }}>
             <SocialIcon
-              title="Sign In Envelope"
+              title={emailTitle}
               button
               type="envelope"
               onPress={() => {
-                alert('Envelope');
+                setEmailModalVisible(true);
               }}
             />
           </View>
- 
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={emailModalVisible}
+            onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+            setEmailModalVisible(!emailModalVisible);
+            }}>
+            <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                    <Text style={styles.modalText}>Enter your email</Text>
+                    <Input onChangeText={text => setEmailTitle(text)} value={emailTitle}></Input>
+                    <Pressable
+                    style={[styles.button, styles.buttonClose]}
+                    onPress={() => setEmailModalVisible(!emailModalVisible)}>
+                    <Text style={styles.textStyle}>Hide Modal</Text>
+                    </Pressable>
+                </View>
+            </View>
+            </Modal>
           <View style={{ width: '100%'}}>
             <SocialIcon
               button
-              title="Sign In Facebook"
+              title={facebookTitle}
               type="facebook"
               onPress={() => {
                 alert('facebook');
               }}
             />
           </View>
- 
           <View style={{ width: '100%'}}>
             <SocialIcon
-              title="Sign In Instagram"
+              title={instagramTitle}
               button
               type="instagram"
               onPress={() => {
@@ -56,10 +128,9 @@ return (
               }}
             />
           </View>
- 
           <View style={{ width: '100%' }}>
             <SocialIcon
-              title="Sign In Linkedin"
+              title={linkedlnTitle}
               button
               type="linkedin"
               onPress={() => {
@@ -67,10 +138,9 @@ return (
               }}
             />
           </View>
-         
           <View style={{ width: '100%' }}>
             <SocialIcon
-              title="Sign In Youtube"
+              title={youtubeTitle}
               button
               type="youtube"
               onPress={() => {
@@ -78,10 +148,9 @@ return (
               }}
             />
           </View>
- 
           <View style={{ width: '100%'}}>
             <SocialIcon
-              title="Sign In Twitter"
+              title={twitterTitle}
               button
               type="twitter"
               onPress={() => {
@@ -89,21 +158,20 @@ return (
               }}
             />
           </View>
-
           <View style={{ width: '100%'}}>
             <SocialIcon
-              title="Sign In Snapchat"
+              title={snapchatTitle}
               button
+              style= {{backgroundColor: 'yellow'}}
               type="snapchat"
               onPress={() => {
                 alert('Snapchat');
               }}
             />
           </View>
-
           <View style={{ width: '100%'}}>
             <SocialIcon
-              title="Sign In Discord"
+              title={discordTitle}
               button
               type="discord"
               onPress={() => {
@@ -111,7 +179,7 @@ return (
               }}
             />
           </View>
-          </ScrollView>
+    </ScrollView>
   );
 };
 
