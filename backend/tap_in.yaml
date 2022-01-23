@@ -140,6 +140,46 @@ paths:
           description: |
             Icon?
       summary: Requesting favicon
+  /share:
+    summary: To request a share link
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/AccountName'
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: |
+            Created a share link
+      security:
+      - clientToken: []
+      operationId: generateShareLink
+      summary: Get share link for provided accounts
+  /connect/{id}:
+    summary: Serves connect pages
+    get:
+      responses:
+        "200":
+          description: |
+            Webpage
+      operationId: getConnectPage
+      summary: Get connect webpage
+    parameters:
+    - name: id
+      description: |
+        Unique ID of connect page
+      schema:
+        type: string
+      in: path
+      required: true
 components:
   schemas:
     Error:

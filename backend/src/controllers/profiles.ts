@@ -4,17 +4,17 @@ import * as types from '../types';
 import { db } from '../app'
 import * as utils from '../utils'
 
-const tokenErr: types.Error = {
+export const tokenErr: types.Error = {
     code: 401,
     message: "Invalid token!"
 }
 
-const accountNameErr: types.Error = {
+export const accountNameErr: types.Error = {
     code: 400,
     message: "Account name missing or invalid!"
 }
 
-const verifyToken = async function(token: string): Promise<boolean> {
+export const verifyToken = async function(token: string): Promise<boolean> {
     return new Promise((resolve) => {
         let hashedToken = utils.hash(token);
         let tokenRef = db.ref("/tokens").on('value', (tokenSnapshot) => {
@@ -23,7 +23,7 @@ const verifyToken = async function(token: string): Promise<boolean> {
     });
 }
 
-const getProfileIDFromToken = async function(token: string): Promise<string> {
+export const getProfileIDFromToken = async function(token: string): Promise<string> {
     return new Promise((resolve, reject) => {
         let hashedToken = utils.hash(token);
         let tokenRef = db.ref("/tokens/" + hashedToken).on('value', (tokenSnapshot) => {
@@ -66,13 +66,13 @@ const addToProfileByToken = async (req: Request, res: Response, next: NextFuncti
         let newAccount = req.body;
         let accountsRef = db.ref('/profiles/' + profileID);
         accountsRef.on('value', async (accountSnapshot) => {
-            let accounts = accountSnapshot.val();
+            let accounts = await accountSnapshot.val();
             if (accounts != null) {
                 accounts.push(newAccount);
             } else {
                 accounts = [newAccount];
             }
-            accountsRef.set([newAccount]);
+            accountsRef.set(accounts);
             return res.status(200).json(newAccount);
         });
     } else {
@@ -94,7 +94,7 @@ const removeFromProfileByToken = async (req: Request, res: Response, next: NextF
         // Remove account with given name from profile
         let accountRef = db.ref('/profiles/' + profileID);
         accountRef.on('value', async (accountSnapshot) => {
-            let accounts = accountSnapshot.val();
+            let accounts = await accountSnapshot.val();
             if (accounts == null) {
                 return res.status(accountNameErr.code).json(accountNameErr);
             }
