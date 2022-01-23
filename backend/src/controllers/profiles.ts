@@ -35,9 +35,6 @@ const getProfileIDFromToken = async function(token: string): Promise<string> {
 // Get a profile by Token
 const getProfileByToken = async (req: Request, res: Response, next: NextFunction) => {
     // Verify token
-    console.log(req);
-    console.log("HERE IS THE AUTHORIZATION HEADER!!");
-    console.log(req.get("Authorization"));
     let tokenValid = await verifyToken(req.get("Authorization"));
     if (tokenValid) {
         // Get profile ID from query param
@@ -65,11 +62,19 @@ const addToProfileByToken = async (req: Request, res: Response, next: NextFuncti
         // Get profile ID from query param
         let profileID = await getProfileIDFromToken(req.get("Authorization"));
 
-        // Push new account to profile
-        let accountsRef = db.ref('/profiles/' + profileID);
+        // Add new account to profile
         let newAccount = req.body;
-        await accountsRef.push(newAccount);
-        return res.status(200).json(newAccount);
+        let accountsRef = db.ref('/profiles/' + profileID);
+        accountsRef.on('value', async (accountSnapshot) => {
+            let accounts = accountSnapshot.val();
+            if (accounts != null) {
+                accounts.push(newAccount);
+            } else {
+                accounts = [newAccount];
+            }
+            accountsRef.set([newAccount]);
+            return res.status(200).json(newAccount);
+        });
     } else {
         return res.status(tokenErr.code).json(tokenErr);
     }
@@ -81,7 +86,7 @@ const removeFromProfileByToken = async (req: Request, res: Response, next: NextF
     if (await verifyToken(req.get("Authorization"))) {
         // Get profile ID from query param
         let profileID = await getProfileIDFromToken(req.get("Authorization"));
-        let accountName = req.params.name;
+        let accountName = req.query.name;
         if (accountName == null) {
             return res.status(accountNameErr.code).json(accountNameErr);
         }
@@ -90,12 +95,25 @@ const removeFromProfileByToken = async (req: Request, res: Response, next: NextF
         let accountRef = db.ref('/profiles/' + profileID);
         accountRef.on('value', async (accountSnapshot) => {
             let accounts = accountSnapshot.val();
-            const index = accounts.indexOf(accountName);
+            if (accounts == null) {
+                return res.status(accountNameErr.code).json(accountNameErr);
+            }
+            let index = -1;
+            for (let i = 0; i < accounts.length; i++) {
+                if (accounts[i].name == accountName) {
+                    index = i;
+                    break;
+                }
+            }
             if (index > -1) {
                 accounts.splice(index, 1);
             }
-            await accountRef.set(accounts);
-            return res.status(200);
+            if (!accounts.length) {
+                await accountRef.set(null);
+            } else {
+                await accountRef.set(accounts);
+            }
+            return res.status(200).end();
         });
     } else {
         return res.status(tokenErr.code).json(tokenErr);
@@ -108,7 +126,7 @@ const updateProfileByToken = async (req: Request, res: Response, next: NextFunct
     if (await verifyToken(req.get("Authorization"))) {
         // Get profile ID from query param
         let profileID = await getProfileIDFromToken(req.get("Authorization"));req.params.id;
-        let accountName = req.params.name;
+        let accountName = req.query.name;
         if (accountName == null) {
             return res.status(accountNameErr.code).json(accountNameErr);
         }
