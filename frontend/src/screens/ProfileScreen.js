@@ -134,7 +134,7 @@ function ProfileScreen () {
   //state for list of selected social media accounts
   const [selectedArray, setSelectedArray] = useState([]);
 
-  const [link, setLink] = useState("");
+  const [link, setLink] = useState("random");
 
   let selectedDict = {
       "email":{emailIconColor},
@@ -310,7 +310,7 @@ const generateQRCodeHandler = (selectedDict) => {
         key: 'token'
     }).then(ret => {
         token = ret.token;
-        sendShare(token, selected);
+        sendShare(token, selected, setLink);
     })
 }
 return (
@@ -700,8 +700,8 @@ return (
         }}>
   <View style={styles.centeredView}>
   <QRCode
-   value="some string value"
-   color={"#2C8DDB"}
+   value={link}
+   color={"#000000"}
    backgroundColor={'white'}
    size={200}
    />    
@@ -732,7 +732,7 @@ async function sendData(name, link, token) {
     console.log(await response.json());
 }
 
-async function sendShare(token, selected) {
+async function sendShare(token, selected, setLink) {
     let myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization", token);
@@ -746,7 +746,9 @@ async function sendShare(token, selected) {
         redirect: 'follow'
     };
     let response = await fetch('https://tap-in-339002.uc.r.appspot.com/share', requestOptions);
-    console.log(await response.json());
+    let newLink = await response.json();
+    setLink(newLink);
+    console.log(newLink);
 }
 
 export default () => (
