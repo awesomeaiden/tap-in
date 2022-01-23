@@ -201,24 +201,6 @@ return (
             onRequestClose={() => {
             Alert.alert("Modal has been closed.");
             setEmailModalVisible(!emailModalVisible);
-            let token;
-            storage.load({
-                key: 'token'
-            }).then(ret => {
-                token = ret.token;
-            })
-            let response = fetch('https://tap-in-339002.uc.r.appspot.com/profile/add', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': token
-                },
-                body: {
-                    "name": 'email',
-                    "link": emailInput
-                }
-            })
-            console.log(response.json());
             }}>
             <View style={styles.centeredView}>
                 <View style={styles.modalView}>
@@ -226,7 +208,16 @@ return (
                     <Input onChangeText={emailSubmitHandler} value={emailInput}></Input>
                     <Pressable
                     style={[styles.button, styles.buttonClose]}
-                    onPress={() => connectEmailHandler(emailInput)}>
+                    onPress={() => {connectEmailHandler(emailInput)
+                        let token;
+                        console.log("1")
+                        storage.load({
+                            key: 'token'
+                        }).then(ret => {
+                            token = ret.token;
+                            console.log(token)
+                            sendData('email', emailInput, token);
+                        })}}>
                     <Text style={styles.textStyle}>Submit</Text>
                     </Pressable>
                 </View>
@@ -251,6 +242,7 @@ return (
             onRequestClose={() => {
             Alert.alert("Modal has been closed.");
             setFacebookModalVisible(!facebookModalVisible);
+
             }}>
             <View style={styles.centeredView}>
                 <View style={styles.modalView}>
@@ -258,7 +250,15 @@ return (
                     <Input onChangeText={facebookSubmitHandler} value={facebookInput}></Input>
                     <Pressable
                     style={[styles.button, styles.buttonClose]}
-                    onPress={() => connectFacebookHandler(facebookInput)}>
+                    onPress={() => {
+                        connectFacebookHandler(facebookInput)
+                        let token;
+                        storage.load({
+                            key: 'token'
+                        }).then(ret => {
+                            token = ret.token;
+                            sendData('facebook', facebookInput, token);
+                        })}}>
                     <Text style={styles.textStyle}>Submit</Text>
                     </Pressable>
                 </View>
@@ -291,7 +291,14 @@ return (
                     <Input onChangeText={instagramSubmitHandler} value={instagramInput}></Input>
                     <Pressable
                     style={[styles.button, styles.buttonClose]}
-                    onPress={() => connectInstagramHandler(instagramInput)}>
+                    onPress={() => {connectInstagramHandler(instagramInput)
+                        let token;
+                        storage.load({
+                            key: 'token'
+                        }).then(ret => {
+                            token = ret.token;
+                            sendData('instagram', instagramInput, token);
+                        })}}>
                     <Text style={styles.textStyle}>Submit</Text>
                     </Pressable>
                 </View>
@@ -323,7 +330,14 @@ return (
                     <Input onChangeText={linkeldnSubmitHandler} value={linkedlnInput}></Input>
                     <Pressable
                     style={[styles.button, styles.buttonClose]}
-                    onPress={() => connectLinkedlnHandler(linkedlnInput)}>
+                    onPress={() => {connectLinkedlnHandler(linkedlnInput)
+                        let token;
+                        storage.load({
+                            key: 'token'
+                        }).then(ret => {
+                            token = ret.token;
+                            sendData('linkedln', linkedlnInput, token);
+                        })}}>
                     <Text style={styles.textStyle}>Submit</Text>
                     </Pressable>
                 </View>
@@ -356,7 +370,14 @@ return (
                     <Input onChangeText={youtubeSubmitHandler} value={youtubeInput}></Input>
                     <Pressable
                     style={[styles.button, styles.buttonClose]}
-                    onPress={() => connectYoutubeHandler(youtubeInput)}>
+                    onPress={() => {connectYoutubeHandler(youtubeInput)
+                        let token;
+                        storage.load({
+                            key: 'token'
+                        }).then(ret => {
+                            token = ret.token;
+                            sendData('youtube', youtubeInput, token);
+                        })}}>
                     <Text style={styles.textStyle}>Submit</Text>
                     </Pressable>
                 </View>
@@ -380,7 +401,8 @@ return (
             visible={twitterModalVisible}
             onRequestClose={() => {
             Alert.alert("Modal has been closed.");
-            setTwitterModalVisible(!linkedlnModalVisible);
+            setTwitterModalVisible(!twitterModalVisible);
+
             }}>
             <View style={styles.centeredView}>
                 <View style={styles.modalView}>
@@ -388,7 +410,14 @@ return (
                     <Input onChangeText={twitterSubmitHandler} value={twitterInput}></Input>
                     <Pressable
                     style={[styles.button, styles.buttonClose]}
-                    onPress={() => connectTwitterHandler(twitterInput)}>
+                    onPress={() => {connectTwitterHandler(twitterInput)
+                        let token;
+                        storage.load({
+                            key: 'token'
+                        }).then(ret => {
+                            token = ret.token;
+                            sendData('twitter', twitterInput, token);
+                        })}}>
                     <Text style={styles.textStyle}>Submit</Text>
                     </Pressable>
                 </View>
@@ -421,7 +450,14 @@ return (
                     <Input onChangeText={snapchatSubmitHandler} value={snapchatInput}></Input>
                     <Pressable
                     style={[styles.button, styles.buttonClose]}
-                    onPress={() => connectSnapchatHandler(snapchatInput)}>
+                    onPress={() => {connectSnapchatHandler(snapchatInput)
+                        let token;
+                        storage.load({
+                            key: 'token'
+                        }).then(ret => {
+                            token = ret.token;
+                            sendData('snapchat', snapchatInput, token);
+                        })}}>
                     <Text style={styles.textStyle}>Submit</Text>
                     </Pressable>
                 </View>
@@ -454,7 +490,14 @@ return (
                     <Input onChangeText={discordSubmitHandler} value={discordInput}></Input>
                     <Pressable
                     style={[styles.button, styles.buttonClose]}
-                    onPress={() => connectDiscordHandler(discordInput)}>
+                    onPress={() => {connectDiscordHandler(discordInput)
+                        let token;
+                        storage.load({
+                            key: 'token'
+                        }).then(ret => {
+                            token = ret.token;
+                            sendData('discord', discordInput, token);
+                        })}}>
                     <Text style={styles.textStyle}>Submit</Text>
                     </Pressable>
                 </View>
@@ -463,6 +506,27 @@ return (
     </ScrollView>
   );
 };
+
+async function sendData(name, link, token) {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", token);
+
+    var raw = JSON.stringify({
+        "name": name,
+        "link": link
+    });
+
+    var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+    };
+    console.log(token);
+    let response = await fetch('https://tap-in-339002.uc.r.appspot.com/profile/add', requestOptions);
+    console.log(await response.json());
+}
 
 export default () => (
   <ApplicationProvider {...eva} theme={eva.dark}>
