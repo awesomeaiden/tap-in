@@ -43,6 +43,7 @@ export enum AccountName {
 export interface Account {
     name: string;
     link: string;
+    color?: string;
 }
 
 export interface Profile {
