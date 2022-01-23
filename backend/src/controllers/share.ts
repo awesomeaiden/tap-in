@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from 'express';
-import axios, { AxiosResponse } from 'axios';
 import * as types from '../types';
 import { db } from '../app'
 import * as utils from '../utils'
@@ -66,13 +65,13 @@ const addToProfileByToken = async (req: Request, res: Response, next: NextFuncti
         let newAccount = req.body;
         let accountsRef = db.ref('/profiles/' + profileID);
         accountsRef.on('value', async (accountSnapshot) => {
-            let accounts = await accountSnapshot.val();
+            let accounts = accountSnapshot.val();
             if (accounts != null) {
                 accounts.push(newAccount);
             } else {
                 accounts = [newAccount];
             }
-            accountsRef.set(accounts);
+            accountsRef.set([newAccount]);
             return res.status(200).json(newAccount);
         });
     } else {
@@ -94,7 +93,7 @@ const removeFromProfileByToken = async (req: Request, res: Response, next: NextF
         // Remove account with given name from profile
         let accountRef = db.ref('/profiles/' + profileID);
         accountRef.on('value', async (accountSnapshot) => {
-            let accounts = await accountSnapshot.val();
+            let accounts = accountSnapshot.val();
             if (accounts == null) {
                 return res.status(accountNameErr.code).json(accountNameErr);
             }
