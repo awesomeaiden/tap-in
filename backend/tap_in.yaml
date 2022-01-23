@@ -49,110 +49,6 @@ paths:
           description: Token for authenticated client
       operationId: authenticateUser
       summary: Request token to authenticate the client
-  /profile/{id}:
-    description: Retrieve profile by ID
-    get:
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Profile'
-          description: Return user profile
-      security:
-      - clientToken: []
-      operationId: getProfileByID
-      summary: Retrieve profile by ID
-    parameters:
-    - name: id
-      description: Profile id
-      schema:
-        type: string
-      in: path
-      required: true
-  /profile/{id}/add:
-    description: Add new account to profile
-    post:
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Account'
-        required: true
-      responses:
-        "201":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Account'
-          description: Account added
-      security:
-      - clientToken: []
-      operationId: addToProfileByID
-      summary: Add account to user profile
-    parameters:
-    - name: id
-      description: Profile id
-      schema:
-        type: string
-      in: path
-      required: true
-  /profile/{id}/remove:
-    post:
-      parameters:
-      - name: name
-        description: Name of account to remove from profile
-        schema:
-          $ref: '#/components/schemas/AccountName'
-        in: query
-        required: true
-      responses:
-        "200":
-          description: Successfully removed account
-      security:
-      - clientToken: []
-      operationId: removeFromProfileByID
-      summary: Remove account from user profile
-    parameters:
-    - name: id
-      description: Profile id
-      schema:
-        type: string
-      in: path
-      required: true
-  /profile/{id}/update:
-    post:
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Account'
-        required: true
-      parameters:
-      - name: accountName
-        description: Name of account
-        schema:
-          $ref: '#/components/schemas/AccountName'
-        in: query
-        required: true
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Account'
-          description: Profile updated
-      security:
-      - clientToken: []
-      operationId: updateProfileByID
-      summary: Update existing account
-    parameters:
-    - name: id
-      description: Profile id
-      schema:
-        type: string
-      in: path
-      required: true
   /profile/remove:
     post:
       parameters:
@@ -229,6 +125,12 @@ paths:
       - clientToken: []
       operationId: getProfileByToken
       summary: Retrieve profile using only the given token
+  /:
+    summary: Splash page
+    get:
+      responses:
+        "200":
+          description: Ok
 components:
   schemas:
     Error:

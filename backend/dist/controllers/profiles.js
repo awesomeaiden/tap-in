@@ -61,6 +61,9 @@ const getProfileIDFromToken = function (token) {
 // Get a profile by Token
 const getProfileByToken = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     // Verify token
+    console.log(req);
+    console.log("HERE IS THE AUTHORIZATION HEADER!!");
+    console.log(req.get("Authorization"));
     let tokenValid = yield verifyToken(req.get("Authorization"));
     if (tokenValid) {
         // Get profile ID from query param

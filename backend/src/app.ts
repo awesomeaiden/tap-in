@@ -1,7 +1,9 @@
 import express from 'express';
 import admin from 'firebase-admin';
 import path from 'path';
+import { engine } from 'express-handlebars';
 const app = express();
+import * as types from './types';
 
 // Controllers
 import userController from "./controllers/users";
@@ -24,7 +26,7 @@ app.use(
         apiSpec: spec,
         validateRequests: true, // (default)
         //validateResponses: true, // false by default
-    }),
+    })
 );
 
 // Register error handler
@@ -37,7 +39,6 @@ app.use((err, req, res, next) => {
     });
 });
 
-
 // User routes
 app.post('/register', userController.registerUser);
 app.post('/authenticate', userController.authenticateUser);
@@ -49,7 +50,7 @@ app.post('/profile/remove:accountName', profileController.removeFromProfileByTok
 app.post('/profile/update:accountName', profileController.updateProfileByToken)
 
 app.get('/', (req, res) => {
-    res.send('Hello World!');
+    res.send("ok");
 });
 
 // Listen to the App Engine-specified port, or 8080 otherwise
