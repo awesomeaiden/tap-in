@@ -49,18 +49,6 @@ app.post('/profile/add', profileController.addToProfileByToken);
 app.post('/profile/remove:accountName', profileController.removeFromProfileByToken);
 app.post('/profile/update:accountName', profileController.updateProfileByToken)
 
-let sampleAccounts: Array<types.Account> = [
-    {
-        name: "snapchat",
-        link: "snapchat_link",
-        color: "#123455"
-    },
-    {
-        name: "facebook",
-        link: "facebook_link",
-        color: "#adef23"
-    }
-]
 app.get('/', (req, res) => {
     res.send("ok");
 });
