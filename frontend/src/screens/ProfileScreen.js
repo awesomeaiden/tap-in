@@ -96,7 +96,7 @@ function ProfileScreen () {
   const [youtubeTitle, setYoutubeTitle] = useState("Connect YouTube");
   const [twitterTitle, setTwitterTitle] = useState("Connect Twitter");
   const [snapchatTitle, setSnapchatTitle] = useState("Connect Snapchat");
-  const [discordTitle, setDiscordTitle] = useState("Connect Discord");
+//   const [discordTitle, setDiscordTitle] = useState("Connect Discord");
 
   //states for user input modals
   const [emailModalVisible, setEmailModalVisible] = useState(false);
@@ -106,7 +106,7 @@ function ProfileScreen () {
   const [youtubeModalVisible, setYoutubeModalVisible] = useState(false);
   const [twitterModalVisible, setTwitterModalVisible] = useState(false);
   const [snapchatModalVisible, setSnapchatModalVisible] = useState(false);
-  const [discordModalVisible, setDiscordModalVisible] = useState(false);
+//   const [discordModalVisible, setDiscordModalVisible] = useState(false);
 
   //states for user input modals
   const [emailInput, setEmailInput] = useState("");
@@ -116,7 +116,31 @@ function ProfileScreen () {
   const [youtubeInput, setYoutubeInput] = useState("");
   const [twitterInput, setTwitterInput] = useState("");
   const [snapchatInput, setSnapchatInput] = useState("");
-  const [discordInput, setDiscordInput] = useState("");
+//   const [discordInput, setDiscordInput] = useState("");
+
+  //states for icon colors
+  const [emailIconColor, setEmailIconColor] = useState(false);
+  const [facebookIconColor, setFacebookIconColor] = useState(false);
+  const [instagramIconColor, setInstagramIconColor] = useState(false);
+  const [linkedlnIconColor, setLinkedlnIconColor] = useState(false);
+  const [youtubeIconColor, setYoutubeIconColor] = useState(false);
+  const [twitterIconColor, setTwitterIconColor] = useState(false);
+  const [snapchatIconColor, setSnapchatIconColor] = useState(false);
+//   const [discordIconColor, setDiscordIconColor] = useState(false);
+
+  //state for list of selected social media accounts
+  const [selectedArray, setSelectedArray] = useState([]);
+
+  let selectedDict = {
+      "email":{emailIconColor},
+      "facebook":{facebookIconColor},
+      "instagram":{instagramIconColor},
+      "linkedln":{linkedlnIconColor},
+      "youtube":{youtubeIconColor},
+      "twitter":{twitterIconColor},
+      "snapchat":{snapchatIconColor},
+    //   "discord":{discordIconColor},
+    };
 
   const emailSubmitHandler = (text) => {
     setEmailInput(text);
@@ -126,6 +150,11 @@ function ProfileScreen () {
     setEmailModalVisible(!emailModalVisible);
     setEmailTitle(title);
 }
+
+  const selectEmailHandler = () => {
+    setEmailIconColor(!emailIconColor)
+    setEmailModalVisible(!emailModalVisible);
+  }
   const facebookSubmitHandler = (text) => {
         setFacebookInput(text);
     }
@@ -134,6 +163,12 @@ function ProfileScreen () {
     setFacebookModalVisible(!facebookModalVisible);
     setFacebookTitle(title);
 }
+
+const selectFacebookHandler = () => {
+    setFacebookIconColor(!facebookIconColor)
+    setFacebookModalVisible(!facebookModalVisible);
+  }
+
   const instagramSubmitHandler = (text) => {
     setInstagramInput(text);
   }
@@ -142,6 +177,12 @@ function ProfileScreen () {
     setInstagramModalVisible(!instagramModalVisible);
     setInstagramTitle(title);
 }
+
+const selectInstagramHandler = () => {
+    setInstagramIconColor(!instagramIconColor)
+    setInstagramModalVisible(!instagramModalVisible);
+  }
+
  const linkeldnSubmitHandler = (text) => {
     setLinkedlnInput(text);
   }
@@ -150,6 +191,11 @@ function ProfileScreen () {
     setLinkedlnModalVisible(!linkedlnModalVisible);
     setLinkedlnTitle(title);
 }
+
+const selectLinkedlnHandler = () => {
+    setLinkedlnIconColor(!linkedlnIconColor)
+    setLinkedlnModalVisible(!linkedlnModalVisible);
+  }
  const youtubeSubmitHandler = (text) => {
     setYoutubeInput(text);
   }
@@ -158,6 +204,11 @@ function ProfileScreen () {
     setYoutubeModalVisible(!youtubeModalVisible);
     setYoutubeTitle(title);
 }
+const selectYoutubeHandler = () => {
+    setYoutubeIconColor(!youtubeIconColor)
+    setYoutubeModalVisible(!youtubeModalVisible);
+  }
+
   const twitterSubmitHandler = (text) => {
     setTwitterInput(text);
   }
@@ -166,6 +217,11 @@ function ProfileScreen () {
     setTwitterModalVisible(!twitterModalVisible);
     setTwitterTitle(title);
 }
+
+const selectTwitterHandler = () => {
+    setTwitterIconColor(!twitterIconColor)
+    setTwitterModalVisible(!twitterModalVisible);
+  }
   const snapchatSubmitHandler = (text) => {
     setSnapchatInput(text);
   }
@@ -174,19 +230,82 @@ function ProfileScreen () {
     setSnapchatModalVisible(!snapchatModalVisible);
     setSnapchatTitle(title);
 }
-  const discordSubmitHandler = (text) => {
-    setDiscordInput(text);
-  }
 
-  const connectDiscordHandler = (title) => {
-    setDiscordModalVisible(!discordModalVisible);
-    setDiscordTitle(title);
+const selectSnapchatHandler = () => {
+    setSnapchatIconColor(!snapchatIconColor)
+    setSnapchatModalVisible(!snapchatModalVisible);
+  }
+//   const discordSubmitHandler = (text) => {
+//     setDiscordInput(text);
+//   }
+
+//   const connectDiscordHandler = (title) => {
+//     setDiscordModalVisible(!discordModalVisible);
+//     setDiscordTitle(title);
+// }
+
+// const selectDiscordHandler = () => {
+//     setDiscordIconColor(!discordIconColor)
+//     setDiscordModalVisible(!discordModalVisible);
+//   }
+
+const generateQRCodeHandler = (selectedDict) => {
+    let selected = [];
+    // for (key in selectedDict){
+    //     // console.log(selectedDict[key]);
+
+    //     if (key === "email")
+    //     {
+    //         let value = selectedDict[key][emailIconColor];
+    //     }
+    //     if(value === true)
+    //     {
+    //         console.log("in the loop\n");
+    //         selected.push(key);
+    //     }
+    // }
+
+    if (emailIconColor)
+    {
+        console.log("pushing email");
+        selected.push("email");
+    }
+    if(facebookIconColor)
+    {
+        selected.push("facebook");
+    }
+
+    if(instagramIconColor)
+    {
+        selected.push("instagram");
+    }
+
+    if(linkedlnIconColor)
+    {
+        selected.push("linkedln");
+    }
+    if(youtubeIconColor)
+    {
+        selected.push("youtube");
+    }
+    if(twitterIconColor)
+    {
+        selected.push("twitter");
+    }
+    if(snapchatIconColor)
+    {
+        selected.push("snapchat");
+    }
+    setSelectedArray(selected);
+    console.log(selectedArray);
 }
 return (
+    <View>
     <ScrollView>  
           <View style={{ width: '100%' }}>
             <SocialIcon
               title={emailTitle}
+              iconColor={emailIconColor ? "green" : "white"}
               button
               type="envelope"
               onPress={() => {
@@ -229,6 +348,11 @@ return (
                     onPress={() => connectEmailHandler(emailInput)}>
                     <Text style={styles.textStyle}>Submit</Text>
                     </Pressable>
+                    <Pressable
+                    style={[styles.button, styles.buttonClose]}
+                    onPress={() => selectEmailHandler()}>
+                    <Text style={styles.textStyle}>Select</Text>
+                    </Pressable>
                 </View>
             </View>
             </Modal>
@@ -237,6 +361,7 @@ return (
             <SocialIcon
               button
               title={facebookTitle}
+              iconColor={facebookIconColor ? "green" : "white"}
               type="facebook"
               onPress={() => {
                 setFacebookModalVisible(true);
@@ -261,6 +386,11 @@ return (
                     onPress={() => connectFacebookHandler(facebookInput)}>
                     <Text style={styles.textStyle}>Submit</Text>
                     </Pressable>
+                    <Pressable
+                    style={[styles.button, styles.buttonClose]}
+                    onPress={() => selectFacebookHandler()}>
+                    <Text style={styles.textStyle}>Select</Text>
+                    </Pressable>
                 </View>
             </View>
             </Modal>
@@ -269,6 +399,7 @@ return (
           <View style={{ width: '100%'}}>
             <SocialIcon
               title={instagramTitle}
+              iconColor={instagramIconColor ? "green" : "white"}
               button
               type="instagram"
               onPress={() => {
@@ -294,6 +425,11 @@ return (
                     onPress={() => connectInstagramHandler(instagramInput)}>
                     <Text style={styles.textStyle}>Submit</Text>
                     </Pressable>
+                    <Pressable
+                    style={[styles.button, styles.buttonClose]}
+                    onPress={() => selectInstagramHandler()}>
+                    <Text style={styles.textStyle}>Select</Text>
+                    </Pressable>
                 </View>
             </View>
             </Modal>
@@ -301,6 +437,7 @@ return (
           <View style={{ width: '100%' }}>
             <SocialIcon
               title={linkedlnTitle}
+              iconColor={linkedlnIconColor ? "green" : "white"}
               button
               type="linkedin"
               onPress={() => {
@@ -326,6 +463,11 @@ return (
                     onPress={() => connectLinkedlnHandler(linkedlnInput)}>
                     <Text style={styles.textStyle}>Submit</Text>
                     </Pressable>
+                    <Pressable
+                    style={[styles.button, styles.buttonClose]}
+                    onPress={() => selectLinkedlnHandler()}>
+                    <Text style={styles.textStyle}>Select</Text>
+                    </Pressable>
                 </View>
             </View>
             </Modal>
@@ -334,6 +476,7 @@ return (
           <View style={{ width: '100%' }}>
             <SocialIcon
               title={youtubeTitle}
+              iconColor={youtubeIconColor ? "green" : "white"}
               button
               type="youtube"
               onPress={() => {
@@ -359,6 +502,11 @@ return (
                     onPress={() => connectYoutubeHandler(youtubeInput)}>
                     <Text style={styles.textStyle}>Submit</Text>
                     </Pressable>
+                    <Pressable
+                    style={[styles.button, styles.buttonClose]}
+                    onPress={() => selectYoutubeHandler()}>
+                    <Text style={styles.textStyle}>Select</Text>
+                    </Pressable>
                 </View>
             </View>
             </Modal>
@@ -366,6 +514,7 @@ return (
           <View style={{ width: '100%'}}>
             <SocialIcon
               title={twitterTitle}
+              iconColor={twitterIconColor ? "green" : "white"}
               button
               type="twitter"
               onPress={() => {
@@ -391,6 +540,11 @@ return (
                     onPress={() => connectTwitterHandler(twitterInput)}>
                     <Text style={styles.textStyle}>Submit</Text>
                     </Pressable>
+                    <Pressable
+                    style={[styles.button, styles.buttonClose]}
+                    onPress={() => selectTwitterHandler()}>
+                    <Text style={styles.textStyle}>Select</Text>
+                    </Pressable>
                 </View>
             </View>
             </Modal>
@@ -398,6 +552,7 @@ return (
           <View style={{ width: '100%'}}>
             <SocialIcon
               title={snapchatTitle}
+              iconColor={snapchatIconColor ? "green" : "white"}
               button
               style= {{backgroundColor: 'yellow'}}
               type="snapchat"
@@ -424,14 +579,20 @@ return (
                     onPress={() => connectSnapchatHandler(snapchatInput)}>
                     <Text style={styles.textStyle}>Submit</Text>
                     </Pressable>
+                    <Pressable
+                    style={[styles.button, styles.buttonClose]}
+                    onPress={() => selectSnapchatHandler()}>
+                    <Text style={styles.textStyle}>Select</Text>
+                    </Pressable>
                 </View>
             </View>
             </Modal>
 
 
-          <View style={{ width: '100%'}}>
+          {/* <View style={{ width: '100%'}}>
             <SocialIcon
               title={discordTitle}
+              iconColor={discordIconColor ? "green" : "white"}
               button
               type="discord"
               onPress={() => {
@@ -457,10 +618,23 @@ return (
                     onPress={() => connectDiscordHandler(discordInput)}>
                     <Text style={styles.textStyle}>Submit</Text>
                     </Pressable>
+                    <Pressable
+                    style={[styles.button, styles.buttonClose]}
+                    onPress={() => selectDiscordHandler()}>
+                    <Text style={styles.textStyle}>Select</Text>
+                    </Pressable>
                 </View>
             </View>
-            </Modal>
+            </Modal> */}
     </ScrollView>
+
+    <Pressable
+    style={[styles.button, styles.buttonClose]}
+    onPress={() => generateQRCodeHandler(selectedDict)}>
+    <Text style={styles.textStyle}>Generate QR code</Text>
+    </Pressable>
+
+    </View>
   );
 };
 
