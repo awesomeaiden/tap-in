@@ -59,20 +59,8 @@ app.post('/authenticate', users_1.default.authenticateUser);
 // Profile routes
 app.get('/profile', profiles_1.default.getProfileByToken);
 app.post('/profile/add', profiles_1.default.addToProfileByToken);
-app.post('/profile/remove:accountName', profiles_1.default.removeFromProfileByToken);
-app.post('/profile/update:accountName', profiles_1.default.updateProfileByToken);
-let sampleAccounts = [
-    {
-        name: "snapchat",
-        link: "snapchat_link",
-        color: "#123455"
-    },
-    {
-        name: "facebook",
-        link: "facebook_link",
-        color: "#adef23"
-    }
-];
+app.post('/profile/remove', profiles_1.default.removeFromProfileByToken);
+app.post('/profile/update', profiles_1.default.updateProfileByToken);
 app.get('/', (req, res) => {
     res.send("ok");
 });

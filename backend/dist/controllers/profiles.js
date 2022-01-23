@@ -61,9 +61,6 @@ const getProfileIDFromToken = function (token) {
 // Get a profile by Token
 const getProfileByToken = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     // Verify token
-    console.log(req);
-    console.log("HERE IS THE AUTHORIZATION HEADER!!");
-    console.log(req.get("Authorization"));
     let tokenValid = yield verifyToken(req.get("Authorization"));
     if (tokenValid) {
         // Get profile ID from query param
@@ -89,11 +86,20 @@ const addToProfileByToken = (req, res, next) => __awaiter(void 0, void 0, void 0
     if (yield verifyToken(req.get("Authorization"))) {
         // Get profile ID from query param
         let profileID = yield getProfileIDFromToken(req.get("Authorization"));
-        // Push new account to profile
-        let accountsRef = app_1.db.ref('/profiles/' + profileID);
+        // Add new account to profile
         let newAccount = req.body;
-        yield accountsRef.push(newAccount);
-        return res.status(200).json(newAccount);
+        let accountsRef = app_1.db.ref('/profiles/' + profileID);
+        accountsRef.on('value', (accountSnapshot) => __awaiter(void 0, void 0, void 0, function* () {
+            let accounts = accountSnapshot.val();
+            if (accounts != null) {
+                accounts.push(newAccount);
+            }
+            else {
+                accounts = [newAccount];
+            }
+            accountsRef.set([newAccount]);
+            return res.status(200).json(newAccount);
+        }));
     }
     else {
         return res.status(tokenErr.code).json(tokenErr);
@@ -105,7 +111,7 @@ const removeFromProfileByToken = (req, res, next) => __awaiter(void 0, void 0, v
     if (yield verifyToken(req.get("Authorization"))) {
         // Get profile ID from query param
         let profileID = yield getProfileIDFromToken(req.get("Authorization"));
-        let accountName = req.params.name;
+        let accountName = req.query.name;
         if (accountName == null) {
             return res.status(accountNameErr.code).json(accountNameErr);
         }
@@ -113,11 +119,25 @@ const removeFromProfileByToken = (req, res, next) => __awaiter(void 0, void 0, v
         let accountRef = app_1.db.ref('/profiles/' + profileID);
         accountRef.on('value', (accountSnapshot) => __awaiter(void 0, void 0, void 0, function* () {
             let accounts = accountSnapshot.val();
-            const index = accounts.indexOf(accountName);
+            if (accounts == null) {
+                return res.status(accountNameErr.code).json(accountNameErr);
+            }
+            let index = -1;
+            for (let i = 0; i < accounts.length; i++) {
+                if (accounts[i].name == accountName) {
+                    index = i;
+                    break;
+                }
+            }
             if (index > -1) {
                 accounts.splice(index, 1);
             }
-            yield accountRef.set(accounts);
+            if (!accounts.length) {
+                yield accountRef.set(null);
+            }
+            else {
+                yield accountRef.set(accounts);
+            }
             return res.status(200);
         }));
     }
@@ -132,7 +152,7 @@ const updateProfileByToken = (req, res, next) => __awaiter(void 0, void 0, void 
         // Get profile ID from query param
         let profileID = yield getProfileIDFromToken(req.get("Authorization"));
         req.params.id;
-        let accountName = req.params.name;
+        let accountName = req.query.name;
         if (accountName == null) {
             return res.status(accountNameErr.code).json(accountNameErr);
         }

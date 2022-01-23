@@ -74,7 +74,7 @@ paths:
               $ref: '#/components/schemas/Account'
         required: true
       parameters:
-      - name: accountName
+      - name: name
         description: Name of account
         schema:
           $ref: '#/components/schemas/AccountName'
@@ -131,6 +131,15 @@ paths:
       responses:
         "200":
           description: Ok
+      summary: Future splashpage?
+  /favicon.io:
+    summary: Requesting icon
+    get:
+      responses:
+        "200":
+          description: |
+            Icon?
+      summary: Requesting favicon
 components:
   schemas:
     Error:
