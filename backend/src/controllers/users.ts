@@ -9,7 +9,7 @@ const registerUser = async (req: Request, res: Response, next: NextFunction) => 
     // Parse user registration info
     let regInfo: types.UserRegistrationInfo = req.body;
     let newUser: types.User = {
-        email: regInfo.auth.email,
+        email: "mailto:" + regInfo.auth.email,
         passHash: utils.hash(regInfo.auth.pass),
         bio: regInfo.bio
     };
