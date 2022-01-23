@@ -34,15 +34,15 @@ const storage = new Storage({
 function SignUpScreen () {
     const navigation = useNavigation();
     const [username, usernameChange] = React.useState('User');
-    const [password, passwordChange] = React.useState("pass");
+    const [password, passwordChange] = React.useState(null);
     return (
         <Layout style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
             <Text category='h1'>Sign Up SCREEN</Text>
             <Text category='h1'>Username</Text>
             <Input onChangeText={text => usernameChange(text)} value={username}/>
             <Text category='h1'>Password</Text>
-            <Input onChangeText={text => passwordChange(text)} value={password}/>
-            <Button onPress={() => SaveKey(username,password)}>Sign Up</Button>
+            <Input onChangeText={text => passwordChange(text)} secureTextEntry={true} value={password}/>
+            <Button onPress={() => SaveKey(username,password, navigation)}>Sign Up</Button>
         </Layout>
     );
 };

@@ -33,14 +33,14 @@ const storage = new Storage({
 function LogInScreen () {
     const navigation = useNavigation();
     const [username, usernameChange] = React.useState('User');
-    const [password, passwordChange] = React.useState("pass");
+    const [password, passwordChange] = React.useState(null);
     return (
         <Layout style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <Text category='h1'>Log In SCREEN</Text>
         <Text category='h1'>Username</Text>
         <Input onChangeText={text => usernameChange(text)} value={username}/>
         <Text category='h1'>Password</Text>
-        <Input onChangeText={text => passwordChange(text)} value={password}/>
+        <Input onChangeText={text => passwordChange(text)} secureTextEntry={true} value={password}/>
         <Button onPress={() => verify(username, password, navigation)}>Button</Button>
         </Layout>
     );

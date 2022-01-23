@@ -104,49 +104,42 @@ function ProfileScreen () {
     }).then(ret => {
         setEmailTitle(ret);
     }).catch(err => {
-        setEmailTitle("Connect Email");
     })
     storage.load({
         key: 'facebook'
     }).then(ret => {
         setFacebookTitle(ret);
     }).catch(err => {
-        setFacebookTitle("Connect Facebook");
     })
     storage.load({
         key: 'instagram'
     }).then(ret => {
         setInstagramTitle(ret);
     }).catch(err => {
-        setInstagramTitle("Connect Instagram");
     })
     storage.load({
         key: 'linkedin'
     }).then(ret => {
         setLinkedlnTitle(ret);
     }).catch(err => {
-        setLinkedlnTitle("Connect Linkedin");
     })
     storage.load({
         key: 'youtube'
     }).then(ret => {
         setYoutubeTitle(ret);
     }).catch(err => {
-        setYoutubeTitle("Connect Youtube");
     })
     storage.load({
         key: 'twitter'
     }).then(ret => {
         setTwitterTitle(ret);
     }).catch(err => {
-        setTwitterTitle("Connect Twitter");
     })
     storage.load({
         key: 'snapchat'
     }).then(ret => {
         setSnapchatTitle(ret);
     }).catch(err => {
-        setSnapchatTitle("Connect Snapchat");
     })
 
 //   const [discordTitle, setDiscordTitle] = useState("Connect Discord");
@@ -192,7 +185,7 @@ function ProfileScreen () {
       "email":{emailIconColor},
       "facebook":{facebookIconColor},
       "instagram":{instagramIconColor},
-      "linkedln":{linkedlnIconColor},
+      "linkedin":{linkedlnIconColor},
       "youtube":{youtubeIconColor},
       "twitter":{twitterIconColor},
       "snapchat":{snapchatIconColor},
@@ -307,7 +300,6 @@ const selectSnapchatHandler = () => {
 //   }
 
 const generateQRCodeHandler = (selectedDict) => {
-    setQRModalVisible(true);
     let selected = [];
     // for (key in selectedDict){
     //     // console.log(selectedDict[key]);
@@ -325,7 +317,6 @@ const generateQRCodeHandler = (selectedDict) => {
 
     if (emailIconColor)
     {
-        console.log("pushing email");
         selected.push("email");
     }
     if(facebookIconColor)
@@ -340,7 +331,7 @@ const generateQRCodeHandler = (selectedDict) => {
 
     if(linkedlnIconColor)
     {
-        selected.push("linkedln");
+        selected.push("linkedin");
     }
     if(youtubeIconColor)
     {
@@ -355,14 +346,15 @@ const generateQRCodeHandler = (selectedDict) => {
         selected.push("snapchat");
     }
     setSelectedArray(selected);
-    console.log(selectedArray);
     let token;
-    console.log("1")
     storage.load({
         key: 'token'
     }).then(ret => {
         token = ret.token;
-        sendShare(token, selected, setLink);
+        if (selected[0] != undefined) {
+            sendShare(token, selected, setLink);
+            setQRModalVisible(true);
+        }
     })
 }
 return (
@@ -401,7 +393,13 @@ return (
                         }).then(ret => {
                             token = ret.token;
                             console.log(token)
+                            let name = 'email';
                             sendData('email', emailInput, token);
+                            storage.save({
+                                key: name,
+                                data: emailInput,
+                                expires: null
+                            })
                         })}}>
                     <Text style={styles.textStyle}>Submit</Text>
                     </Pressable>
@@ -448,7 +446,13 @@ return (
                             key: 'token'
                         }).then(ret => {
                             token = ret.token;
+                            let name = 'facebook';
                             sendData('facebook', facebookInput, token);
+                            storage.save({
+                                key: name,
+                                data: facebookInput,
+                                expires: null
+                            })
                         })}}>
                     <Text style={styles.textStyle}>Submit</Text>
                     </Pressable>
@@ -494,7 +498,13 @@ return (
                             key: 'token'
                         }).then(ret => {
                             token = ret.token;
+                            let name = 'instagram';
                             sendData('instagram', instagramInput, token);
+                            storage.save({
+                                key: name,
+                                data: instagramInput,
+                                expires: null
+                            })
                         })}}>
                     <Text style={styles.textStyle}>Submit</Text>
                     </Pressable>
@@ -529,7 +539,7 @@ return (
             }}>
             <View style={styles.centeredView}>
                 <View style={styles.modalView}>
-                    <Text style={styles.modalText}>Enter your linkedln username</Text>
+                    <Text style={styles.modalText}>Enter your linkedin username</Text>
                     <Input onChangeText={linkeldnSubmitHandler} value={linkedlnInput}></Input>
                     <Pressable
                     style={[styles.button, styles.buttonClose]}
@@ -539,7 +549,13 @@ return (
                             key: 'token'
                         }).then(ret => {
                             token = ret.token;
-                            sendData('linkedln', linkedlnInput, token);
+                            let name = 'linkedin';
+                            sendData('linkedin', linkedlnInput, token);
+                            storage.save({
+                                key: name,
+                                data: linkedlnInput,
+                                expires: null
+                            })
                         })}}>
                     <Text style={styles.textStyle}>Submit</Text>
                     </Pressable>
@@ -585,7 +601,13 @@ return (
                             key: 'token'
                         }).then(ret => {
                             token = ret.token;
+                            let name = 'youtube';
                             sendData('youtube', youtubeInput, token);
+                            storage.save({
+                                key: name,
+                                data: youtubeInput,
+                                expires: null
+                            })
                         })}}>
                     <Text style={styles.textStyle}>Submit</Text>
                     </Pressable>
@@ -631,7 +653,13 @@ return (
                             key: 'token'
                         }).then(ret => {
                             token = ret.token;
+                            let name = 'twitter';
                             sendData('twitter', twitterInput, token);
+                            storage.save({
+                                key: name,
+                                data: twitterInput,
+                                expires: null
+                            })
                         })}}>
                     <Text style={styles.textStyle}>Submit</Text>
                     </Pressable>
@@ -677,7 +705,13 @@ return (
                             key: 'token'
                         }).then(ret => {
                             token = ret.token;
+                            let name = 'snapchat';
                             sendData('snapchat', snapchatInput, token);
+                            storage.save({
+                                key: name,
+                                data: snapchatInput,
+                                expires: null
+                            })
                         })}}>
                     <Text style={styles.textStyle}>Submit</Text>
                     </Pressable>
@@ -756,7 +790,12 @@ return (
    color={"#000000"}
    backgroundColor={'white'}
    size={200}
-   />    
+   />
+      <Pressable
+          style={[styles.button, styles.buttonClose]}
+          onPress={() => setQRModalVisible(!qrModalVisible)}>
+          <Text style={styles.textStyle}>Close QR code</Text>
+      </Pressable>
    </View>
      </Modal>
     </View>
@@ -780,7 +819,11 @@ async function sendData(name, link, token) {
         redirect: 'follow'
     };
     console.log(token);
-    let response = await fetch('https://tap-in-339002.uc.r.appspot.com/profile/add', requestOptions);
+    let response = await fetch('https://tap-in-339002.uc.r.appspot.com/profile/add', requestOptions)
+        .catch(err => {
+            console.log(err);
+            console.log(response);
+        });
     console.log(await response.json());
     await storage.save({
         key: name,
@@ -795,6 +838,8 @@ async function sendShare(token, selected, setLink) {
     myHeaders.append("Authorization", token);
 
     let raw = JSON.stringify(selected);
+    console.log(myHeaders);
+    console.log(raw);
 
     let requestOptions = {
         method: 'POST',
