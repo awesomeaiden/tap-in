@@ -8,6 +8,7 @@ import * as types from './types';
 // Controllers
 import userController from "./controllers/users";
 import profileController from "./controllers/profiles";
+import sharingController from "./controllers/share";
 
 // Import validator middleware
 import * as OpenApiValidator from 'express-openapi-validator';
@@ -48,6 +49,10 @@ app.get('/profile', profileController.getProfileByToken);
 app.post('/profile/add', profileController.addToProfileByToken);
 app.post('/profile/remove', profileController.removeFromProfileByToken);
 app.post('/profile/update', profileController.updateProfileByToken)
+
+// Sharing routes
+app.post('/share', sharingController.generateShareLink);
+app.get('/connect/:id', sharingController.getConnectPage);
 
 app.get('/', (req, res) => {
     res.send("ok");

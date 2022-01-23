@@ -4,17 +4,17 @@ import * as types from '../types';
 import { db } from '../app'
 import * as utils from '../utils'
 
-const tokenErr: types.Error = {
+export const tokenErr: types.Error = {
     code: 401,
     message: "Invalid token!"
 }
 
-const accountNameErr: types.Error = {
+export const accountNameErr: types.Error = {
     code: 400,
     message: "Account name missing or invalid!"
 }
 
-const verifyToken = async function(token: string): Promise<boolean> {
+export const verifyToken = async function(token: string): Promise<boolean> {
     return new Promise((resolve) => {
         let hashedToken = utils.hash(token);
         let tokenRef = db.ref("/tokens").on('value', (tokenSnapshot) => {
@@ -23,7 +23,7 @@ const verifyToken = async function(token: string): Promise<boolean> {
     });
 }
 
-const getProfileIDFromToken = async function(token: string): Promise<string> {
+export const getProfileIDFromToken = async function(token: string): Promise<string> {
     return new Promise((resolve, reject) => {
         let hashedToken = utils.hash(token);
         let tokenRef = db.ref("/tokens/" + hashedToken).on('value', (tokenSnapshot) => {
@@ -148,4 +148,4 @@ const updateProfileByToken = async (req: Request, res: Response, next: NextFunct
     }
 };
 
-export default { getProfileByToken, addToProfileByToken, removeFromProfileByToken, updateProfileByToken, verifyToken, getProfileIDFromToken };
+export default { getProfileByToken, addToProfileByToken, removeFromProfileByToken, updateProfileByToken };
