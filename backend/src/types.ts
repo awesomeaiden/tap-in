@@ -40,16 +40,16 @@ export enum AccountName {
     email
 }
 
-export const AccountColors = new Map<number, string>([
-    [AccountName.facebook, "4267B2"],
-    [AccountName.instagram, "8A3AB9"],
-    [AccountName.snapchat, "FFFC00"],
-    [AccountName.twitter, "00ACEE"],
-    [AccountName.linkedin, "0E76A8"],
-    [AccountName.discord, "5865F2"],
-    [AccountName.youtube, "FF0000"],
-    [AccountName.phone, "349BEB"],
-    [AccountName.email, "002D4F"]
+export const AccountColor = new Map<string, string>([
+    [AccountName[AccountName.facebook], "4267B2"],
+    [AccountName[AccountName.instagram], "8A3AB9"],
+    [AccountName[AccountName.snapchat], "FFFC00"],
+    [AccountName[AccountName.twitter], "00ACEE"],
+    [AccountName[AccountName.linkedin], "0E76A8"],
+    [AccountName[AccountName.discord], "5865F2"],
+    [AccountName[AccountName.youtube], "FF0000"],
+    [AccountName[AccountName.phone], "349BEB"],
+    [AccountName[AccountName.email], "002D4F"]
 ]);
 
 export interface Account {

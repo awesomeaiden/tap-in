@@ -5,16 +5,11 @@ html
         link(rel="stylesheet", href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css")
         title Tap In
     body
-        div.container.mt-2
+        div.container.mt-2.text-center
             header
-                h2 Welcome
-                p  Here is the homepage for Tap In!
+                h2(style="padding-bottom: 15px") TapIn!
             section
-                h2 Here is the body
-                p Lorem ipsum dolor sit, amet consectetur adipisicing elit. Totam, repellendus!
-                ul
+                ul(style="padding-inline-start: 0px; padding-top=15px")
                   each account in accounts.length ? accounts : ["No accounts!"]
                     div.col-md-12.text-center
-                        button(style=`background-color: ${color}` type="button" class="btn btn-primary") Button
-            footer
-                h2 Here is the footer
+                        button(href=`${account.link}` style=`width: 100%; background-color: #${colors.get(account.name)}` type="button" class="btn btn-primary btn-lg btn-block")= account.name.charAt(0).toUpperCase() + account.name.slice(1)
