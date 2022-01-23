@@ -1,6 +1,6 @@
 import React from 'react';
 import * as eva from '@eva-design/eva';
-import { ApplicationProvider, Layout, Text, Button } from '@ui-kitten/components';
+import { ApplicationProvider, Layout, Text, Button, Input} from '@ui-kitten/components';
 import { useNavigation } from '@react-navigation/native';
 import {TextInput} from "react-native";
 import Storage from 'react-native-storage';
@@ -38,9 +38,9 @@ function SignUpScreen () {
         <Layout style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
             <Text category='h1'>Sign Up SCREEN</Text>
             <Text category='h1'>Username</Text>
-            <TextInput onChangeText={text => usernameChange(text)} value={username}/>
+            <Input onChangeText={text => usernameChange(text)} value={username}/>
             <Text category='h1'>Password</Text>
-            <TextInput onChangeText={text => passwordChange(text)} value={password}/>
+            <Input onChangeText={text => passwordChange(text)} value={password}/>
             <Button onPress={() => SaveKey(username,password)}>Sign Up</Button>
         </Layout>
     );
