@@ -76,6 +76,12 @@ function ProfileScreen () {
   //states for user input modals
   const [emailModalVisible, setEmailModalVisible] = useState(false);
 
+  //states for user input modals
+  const [emailInput, setEmailInput] = useState("");
+
+  const emailSubmitHandler = (text) =>{
+    setEmailInput(text);
+  }
 return (
     <ScrollView>  
           <View style={{ width: '100%' }}>
@@ -99,7 +105,7 @@ return (
             <View style={styles.centeredView}>
                 <View style={styles.modalView}>
                     <Text style={styles.modalText}>Enter your email</Text>
-                    <Input onChangeText={text => setEmailTitle(text)} value={emailTitle}></Input>
+                    <Input onChangeText={emailSubmitHandler} value={emailInput}></Input>
                     <Pressable
                     style={[styles.button, styles.buttonClose]}
                     onPress={() => setEmailModalVisible(!emailModalVisible)}>
