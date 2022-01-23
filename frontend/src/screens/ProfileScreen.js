@@ -6,6 +6,7 @@ import { StyleSheet, View, ScrollView, Modal, Pressable, TextInput } from 'react
 import { Icon, SocialIcon } from 'react-native-elements';
 import Storage from 'react-native-storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import QRCode from 'react-native-qrcode-svg'
 
 const storage = new Storage({
     // maximum capacity, default 1000 key-ids
@@ -106,6 +107,8 @@ function ProfileScreen () {
   const [youtubeModalVisible, setYoutubeModalVisible] = useState(false);
   const [twitterModalVisible, setTwitterModalVisible] = useState(false);
   const [snapchatModalVisible, setSnapchatModalVisible] = useState(false);
+  const [qrModalVisible, setQRModalVisible] = useState(false);
+
 //   const [discordModalVisible, setDiscordModalVisible] = useState(false);
 
   //states for user input modals
@@ -130,6 +133,8 @@ function ProfileScreen () {
 
   //state for list of selected social media accounts
   const [selectedArray, setSelectedArray] = useState([]);
+
+  const [link, setLink] = useState("");
 
   let selectedDict = {
       "email":{emailIconColor},
@@ -250,6 +255,7 @@ const selectSnapchatHandler = () => {
 //   }
 
 const generateQRCodeHandler = (selectedDict) => {
+    setQRModalVisible(true);
     let selected = [];
     // for (key in selectedDict){
     //     // console.log(selectedDict[key]);
@@ -676,7 +682,23 @@ return (
     onPress={() => generateQRCodeHandler(selectedDict)}>
     <Text style={styles.textStyle}>Generate QR code</Text>
     </Pressable>
-
+    <Modal
+        animationType="slide"
+        transparent={true}
+        visible={qrModalVisible}
+        onRequestClose={() => {
+        Alert.alert("Modal has been closed.");
+        setQRModalVisible(!qrModalVisible);
+        }}>
+  <View style={styles.centeredView}>
+  <QRCode
+   value="some string value"
+   color={"#2C8DDB"}
+   backgroundColor={'white'}
+   size={200}
+   />    
+   </View>
+     </Modal>
     </View>
   );
 };
