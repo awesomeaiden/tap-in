@@ -40,6 +40,11 @@ export enum AccountName {
     email
 }
 
+let AccountColors = new Map<string, string>([
+    ["key1", "value1"],
+    ["key2", "value2"]
+]);
+
 export interface Account {
     name: string;
     link: string;

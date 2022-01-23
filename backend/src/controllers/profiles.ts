@@ -17,7 +17,8 @@ export const accountNameErr: types.Error = {
 export const verifyToken = async function(token: string): Promise<boolean> {
     return new Promise((resolve) => {
         let hashedToken = utils.hash(token);
-        let tokenRef = db.ref("/tokens").on('value', (tokenSnapshot) => {
+        let tokenRef = db.ref("/tokens");
+        tokenRef.on('value', (tokenSnapshot) => {
             resolve(tokenSnapshot.hasChild(hashedToken));
         });
     });
@@ -64,15 +65,15 @@ const addToProfileByToken = async (req: Request, res: Response, next: NextFuncti
 
         // Add new account to profile
         let newAccount = req.body;
-        let accountsRef = db.ref('/profiles/' + profileID);
-        accountsRef.on('value', async (accountSnapshot) => {
-            let accounts = await accountSnapshot.val();
-            if (accounts != null) {
-                accounts.push(newAccount);
+        let accountsRef = await db.ref('/profiles/' + profileID);
+        await accountsRef.transaction((currentAccounts) => {
+            if (currentAccounts != null) {
+                currentAccounts.push(newAccount);
             } else {
-                accounts = [newAccount];
+                currentAccounts = [newAccount];
             }
-            accountsRef.set(accounts);
+            return currentAccounts;
+        }).then(() => {
             return res.status(200).json(newAccount);
         });
     } else {
@@ -92,27 +93,23 @@ const removeFromProfileByToken = async (req: Request, res: Response, next: NextF
         }
 
         // Remove account with given name from profile
-        let accountRef = db.ref('/profiles/' + profileID);
-        accountRef.on('value', async (accountSnapshot) => {
-            let accounts = await accountSnapshot.val();
-            if (accounts == null) {
-                return res.status(accountNameErr.code).json(accountNameErr);
+        let accountsRef = db.ref('/profiles/' + profileID);
+        await accountsRef.transaction((currentAccounts) => {
+            if (currentAccounts != null) {
+               let index = -1;
+               for (let i = 0; i < currentAccounts.length; i++) {
+                   if (currentAccounts[i].name == accountName) {
+                       index = i;
+                       break;
+                   }
+               }
+               if (index > -1) {
+                   currentAccounts.splice(index, 1);
+               }
+               return currentAccounts
             }
-            let index = -1;
-            for (let i = 0; i < accounts.length; i++) {
-                if (accounts[i].name == accountName) {
-                    index = i;
-                    break;
-                }
-            }
-            if (index > -1) {
-                accounts.splice(index, 1);
-            }
-            if (!accounts.length) {
-                await accountRef.set(null);
-            } else {
-                await accountRef.set(accounts);
-            }
+            return currentAccounts;
+        }).then(() => {
             return res.status(200).end();
         });
     } else {
@@ -133,14 +130,22 @@ const updateProfileByToken = async (req: Request, res: Response, next: NextFunct
         let newAccount = req.body;
 
         // Update account with given name from profile
-        let accountRef = db.ref('/profiles/' + profileID);
-        accountRef.on('value', async (accountSnapshot) => {
-            let accounts = accountSnapshot.val();
-            const index = accounts.indexOf(accountName);
-            if (index > -1) {
-                accounts[index] = newAccount;
+        let accountsRef = db.ref('/profiles/' + profileID);
+        await accountsRef.transaction((currentAccounts) => {
+            if (currentAccounts != null) {
+                let index = -1;
+                for (let i = 0; i < currentAccounts.length; i++) {
+                    if (currentAccounts[i].name == accountName) {
+                        index = i;
+                        break;
+                    }
+                }
+                if (index > -1) {
+                    currentAccounts[index] = newAccount;
+                }
             }
-            await accountRef.set(accounts);
+            return currentAccounts;
+        }).then(() => {
             return res.status(200).json(newAccount);
         });
     } else {
