@@ -11,7 +11,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-    AsyncStorage.clear();
     return (
     <NavigationContainer>
         <Stack.Navigator>

@@ -31,8 +31,7 @@ const storage = new Storage({
 function LoadScreen () {
     const navigation = useNavigation();
     storage.load({
-        key: 'token',
-        autoSync: 'false'
+        key: 'token'
     }).then(ret => {
         if (ret != null) {
             verify(ret.token, navigation);

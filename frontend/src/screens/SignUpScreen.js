@@ -65,9 +65,6 @@ async function SaveKey(username, password, navigation) {
         })
     });
     let token = (await response.json()).token;
-    console.log(username);
-    console.log(password);
-    console.log(token);
     storage.save({
         key:'token',
         data:{

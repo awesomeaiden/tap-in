@@ -58,7 +58,6 @@ async function verify(username, password, navigation) {
         })
     })
     let token = (await response.json()).token;
-    console.log(token);
     if (token != undefined) {
         await storage.save(
             {
@@ -68,8 +67,9 @@ async function verify(username, password, navigation) {
                 },
                 expires: null
             }
-        )
-        navigation.navigate('Profile');
+        ).then(() => {
+            navigation.navigate('Profile')
+        })
     }
 }
 
