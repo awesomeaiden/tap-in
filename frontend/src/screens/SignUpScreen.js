@@ -6,6 +6,8 @@ import {TextInput} from "react-native";
 import Storage from 'react-native-storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+
+
 const storage = new Storage({
     // maximum capacity, default 1000 key-ids
     size: 1,
@@ -33,7 +35,6 @@ function SignUpScreen () {
     const navigation = useNavigation();
     const [username, usernameChange] = React.useState('User');
     const [password, passwordChange] = React.useState("pass");
-
     return (
         <Layout style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
             <Text category='h1'>Sign Up SCREEN</Text>
@@ -41,12 +42,12 @@ function SignUpScreen () {
             <TextInput onChangeText={text => usernameChange(text)} value={username}/>
             <Text category='h1'>Password</Text>
             <TextInput onChangeText={text => passwordChange(text)} value={password}/>
-            <Button onPress={() => SaveKey(username,password)}>Sign Up</Button>
+            <Button onPress={() => SaveKey(username,password,navigation)}>Sign Up</Button>
         </Layout>
     );
 };
 
-async function SaveKey(username, password) {
+async function SaveKey(username, password, navigation) {
     let response = await fetch('https://tap-in-339002.uc.r.appspot.com/register', {
         method: "POST",
         headers: {
@@ -74,6 +75,7 @@ async function SaveKey(username, password) {
         },
         expires: null
     });
+    navigation.navigate('Profile');
 }
 
 export default () => (

@@ -3,7 +3,32 @@ import * as eva from '@eva-design/eva';
 import { ApplicationProvider, Layout, Text, Button, Input } from '@ui-kitten/components';
 import { useNavigation } from '@react-navigation/native';
 import { StyleSheet, View, ScrollView, Modal, Pressable, TextInput } from 'react-native';
-import { SocialIcon } from 'react-native-elements';
+import { Icon, SocialIcon } from 'react-native-elements';
+import Storage from 'react-native-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const storage = new Storage({
+    // maximum capacity, default 1000 key-ids
+    size: 1,
+
+    // Use AsyncStorage for RN apps, or window.localStorage for web apps.
+    // If storageBackend is not set, data will be lost after reload.
+    storageBackend: AsyncStorage, // for web: window.localStorage
+
+    // expire time, default: 1 day (1000 * 3600 * 24 milliseconds).
+    // can be null, which means never expire.
+    defaultExpires: null,
+
+    // cache data in the memory. default is true.
+    enableCache: false,
+
+    // if data was not found in storage or expired data was found,
+    // the corresponding sync method will be invoked returning
+    // the latest data.
+    sync: {
+        // we'll talk about the details later.
+    }
+});
 
 
 function ProfileScreen () {
@@ -101,6 +126,24 @@ return (
             onRequestClose={() => {
             Alert.alert("Modal has been closed.");
             setEmailModalVisible(!emailModalVisible);
+            let token;
+            storage.load({
+                key: 'token'
+            }).then(ret => {
+                token = ret.token;
+            })
+            let response = fetch('https://tap-in-339002.uc.r.appspot.com/profile/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token
+                },
+                body: {
+                    "name": 'email',
+                    "link": emailInput
+                }
+            })
+            console.log(response.json());
             }}>
             <View style={styles.centeredView}>
                 <View style={styles.modalView}>
@@ -184,6 +227,13 @@ return (
                 alert('discord');
               }}
             />
+          </View>
+          <View style={{width:'100%'}}>
+              <Icon
+                  title={'QRCode'}
+                  button
+                  type="fa fa-code"
+                  />
           </View>
     </ScrollView>
   );
