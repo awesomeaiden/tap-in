@@ -31,14 +31,14 @@ const storage = new Storage({
 function LoadScreen () {
     const navigation = useNavigation();
     storage.load({
-        key: 'token'
+        key: 'token',
+        autoSync: 'false'
     }).then(ret => {
         if (ret != null) {
             verify(ret.token, navigation);
         }
     }).catch(err => {
         if (err != null) {
-            console.log(err);
             navigation.navigate('Home');
         }
     })
