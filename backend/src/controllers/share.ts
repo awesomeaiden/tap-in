@@ -39,6 +39,8 @@ const getConnectPage = async (req: Request, res: Response, next: NextFunction) =
    // No token verification involved - just generate a page with the information needed and serve
     let pageID = req.params.id;
     // Get page details from the database, gather the necessary profile information, and generate the page
+    // Send the webpage to the user
+    // Format the usernames into links before sending where possible
 };
 
 export default { generateShareLink, getConnectPage };
