@@ -38,9 +38,31 @@ const generateShareLink = async (req: Request, res: Response, next: NextFunction
 const getConnectPage = async (req: Request, res: Response, next: NextFunction) => {
    // No token verification involved - just generate a page with the information needed and serve
     let pageID = req.params.id;
-    // Get page details from the database, gather the necessary profile information, and generate the page
-    // Send the webpage to the user
-    // Format the usernames into links before sending where possible
+    // Get page details from the database
+    let pageRef = db.ref('/connections/' + pageID);
+    pageRef.on('value', async (pageSnapshot) => {
+        let details = await pageSnapshot.val();
+        let accountNames = details.accounts;
+        let profileID = details.profile;
+        // Gather account details from profile
+        let profileRef = db.ref('/profiles/' + profileID);
+        profileRef.on('value', async (profileSnapshot) => {
+            let allAccounts = await profileSnapshot.val();
+            let reqAccounts = [];
+            for (let i = 0; i < allAccounts.length; i++) {
+                if (accountNames.includes(allAccounts[i].name)) {
+                    reqAccounts.push(allAccounts[i]);
+                }
+            }
+            // Now we have the accounts and the links (usernames? may have to convert)
+
+            // Send the webpage to the user
+            res.render('connect', {
+                accounts: reqAccounts,
+                colors: types.AccountColors
+            });
+        });
+    });
 };
 
 export default { generateShareLink, getConnectPage };

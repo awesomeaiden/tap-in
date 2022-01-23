@@ -5,6 +5,15 @@ import { engine } from 'express-handlebars';
 const app = express();
 import * as types from './types';
 
+// Firebase admin sdk
+admin.initializeApp({
+    credential: admin.credential.applicationDefault(),
+    databaseURL: process.env.FIREBASE_RT_DB
+});
+
+// As an admin, the app has access to read and write all data, regardless of Security Rules
+export let db = admin.database();
+
 // Controllers
 import userController from "./controllers/users";
 import profileController from "./controllers/profiles";
@@ -40,6 +49,10 @@ app.use((err, req, res, next) => {
     });
 });
 
+// Pug view engine
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
+
 // User routes
 app.post('/register', userController.registerUser);
 app.post('/authenticate', userController.authenticateUser);
@@ -63,14 +76,3 @@ const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
     return console.log(`Server listening on port ${PORT}...`);
 });
-
-// Firebase stuff
-
-// Firebase admin sdk
-admin.initializeApp({
-    credential: admin.credential.applicationDefault(),
-    databaseURL: process.env.FIREBASE_RT_DB
-});
-
-// As an admin, the app has access to read and write all data, regardless of Security Rules
-export let db = admin.database();

@@ -5,9 +5,9 @@
   "main": "dist/app.js",
   "scripts": {
     "start": "node ./dist/app.js",
-    "gcp-build": "tsc -p . && cp tap_in.yaml dist",
-    "build-and-start": "tsc && cp tap_in.yaml dist && cp -r share_pages dist && node dist/app.js",
-    "win-build-and-start": "tsc && copy tap_in.yaml dist && xcopy src\\share_pages dist\\share_pages\\ /s /e /y && node dist/app.js",
+    "gcp-build": "tsc -p . && cp tap_in.yaml dist && cp -r src/views dist",
+    "build-and-start": "tsc && cp tap_in.yaml dist && cp -r src/views dist && node dist/app.js",
+    "win-build-and-start": "tsc && copy tap_in.yaml dist && xcopy src\\views dist\\views\\ /s /e /y && node dist/app.js",
     "lint": "eslint . --ext .ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -29,6 +29,7 @@
     "express-handlebars": "^6.0.2",
     "express-openapi-validator": "^4.13.5",
     "firebase-admin": "^10.0.2",
+    "pug": "^3.0.2",
     "react": "^17.0.2",
     "typescript": "^4.5.5"
   },
