@@ -185,7 +185,7 @@ function ProfileScreen () {
       "email":{emailIconColor},
       "facebook":{facebookIconColor},
       "instagram":{instagramIconColor},
-      "linkedln":{linkedlnIconColor},
+      "linkedin":{linkedlnIconColor},
       "youtube":{youtubeIconColor},
       "twitter":{twitterIconColor},
       "snapchat":{snapchatIconColor},
@@ -331,7 +331,7 @@ const generateQRCodeHandler = (selectedDict) => {
 
     if(linkedlnIconColor)
     {
-        selected.push("linkedln");
+        selected.push("linkedin");
     }
     if(youtubeIconColor)
     {
@@ -539,7 +539,7 @@ return (
             }}>
             <View style={styles.centeredView}>
                 <View style={styles.modalView}>
-                    <Text style={styles.modalText}>Enter your linkedln username</Text>
+                    <Text style={styles.modalText}>Enter your linkedin username</Text>
                     <Input onChangeText={linkeldnSubmitHandler} value={linkedlnInput}></Input>
                     <Pressable
                     style={[styles.button, styles.buttonClose]}
@@ -549,8 +549,8 @@ return (
                             key: 'token'
                         }).then(ret => {
                             token = ret.token;
-                            let name = 'linkedln';
-                            sendData('linkedln', linkedlnInput, token);
+                            let name = 'linkedin';
+                            sendData('linkedin', linkedlnInput, token);
                             storage.save({
                                 key: name,
                                 data: linkedlnInput,
