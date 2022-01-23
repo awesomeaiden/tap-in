@@ -104,49 +104,42 @@ function ProfileScreen () {
     }).then(ret => {
         setEmailTitle(ret);
     }).catch(err => {
-        console.log(err);
     })
     storage.load({
         key: 'facebook'
     }).then(ret => {
         setFacebookTitle(ret);
     }).catch(err => {
-        setFacebookTitle("Connect Facebook");
     })
     storage.load({
         key: 'instagram'
     }).then(ret => {
         setInstagramTitle(ret);
     }).catch(err => {
-        setInstagramTitle("Connect Instagram");
     })
     storage.load({
         key: 'linkedin'
     }).then(ret => {
         setLinkedlnTitle(ret);
     }).catch(err => {
-        setLinkedlnTitle("Connect Linkedin");
     })
     storage.load({
         key: 'youtube'
     }).then(ret => {
         setYoutubeTitle(ret);
     }).catch(err => {
-        setYoutubeTitle("Connect Youtube");
     })
     storage.load({
         key: 'twitter'
     }).then(ret => {
         setTwitterTitle(ret);
     }).catch(err => {
-        setTwitterTitle("Connect Twitter");
     })
     storage.load({
         key: 'snapchat'
     }).then(ret => {
         setSnapchatTitle(ret);
     }).catch(err => {
-        setSnapchatTitle("Connect Snapchat");
     })
 
 //   const [discordTitle, setDiscordTitle] = useState("Connect Discord");
