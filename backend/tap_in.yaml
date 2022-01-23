@@ -144,6 +144,7 @@ paths:
     summary: To request a share link
     post:
       requestBody:
+        description: Send an array of account names to share
         content:
           application/json:
             schema:
