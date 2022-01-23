@@ -5,7 +5,7 @@
   "main": "dist/app.js",
   "scripts": {
     "start": "node ./dist/app.js",
-    "gcp-build": "tsc -p . && cp tap_in.yaml dist",
+    "gcp-build": "tsc -p . && cp tap_in.yaml dist && cp -r src/views dist",
     "build-and-start": "tsc && cp tap_in.yaml dist && cp -r src/views dist && node dist/app.js",
     "win-build-and-start": "tsc && copy tap_in.yaml dist && xcopy src\\views dist\\views\\ /s /e /y && node dist/app.js",
     "lint": "eslint . --ext .ts",

@@ -58,7 +58,8 @@ const getConnectPage = async (req: Request, res: Response, next: NextFunction) =
 
             // Send the webpage to the user
             res.render('connect', {
-                accounts: reqAccounts
+                accounts: reqAccounts,
+                colors: types.AccountColors
             });
         });
     });
