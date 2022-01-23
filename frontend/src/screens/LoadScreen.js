@@ -45,9 +45,14 @@ function LoadScreen () {
     return (
         <Layout style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
             <Text category='h1'>Load SCREEN</Text>
+            <Button onPress={() => home(navigation)}>Home</Button>
         </Layout>
     );
 };
+
+async function home(navigation) {
+    navigation.navigate('Home');
+}
 
 async function verify(token, navigation) {
     var myHeaders = new Headers();
