@@ -298,6 +298,14 @@ const generateQRCodeHandler = (selectedDict) => {
     }
     setSelectedArray(selected);
     console.log(selectedArray);
+    let token;
+    console.log("1")
+    storage.load({
+        key: 'token'
+    }).then(ret => {
+        token = ret.token;
+        sendShare(token, selected);
+    })
 }
 return (
     <View>
@@ -699,6 +707,23 @@ async function sendData(name, link, token) {
     };
     console.log(token);
     let response = await fetch('https://tap-in-339002.uc.r.appspot.com/profile/add', requestOptions);
+    console.log(await response.json());
+}
+
+async function sendShare(token, selected) {
+    let myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", token);
+
+    let raw = JSON.stringify(selected);
+
+    let requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+    };
+    let response = await fetch('https://tap-in-339002.uc.r.appspot.com/share', requestOptions);
     console.log(await response.json());
 }
 
